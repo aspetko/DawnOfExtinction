@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'bloodynormal';
+    src: url('../font/BLOODY-webfont.eot');
+    src: url('../font/BLOODY-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../font/BLOODY-webfont.woff2') format('woff2'),
+    url('../font/BLOODY-webfont.woff') format('woff'),
+    url('../font/BLOODY-webfont.ttf') format('truetype'),
+    url('../font/BLOODY-webfont.svg#bloodynormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    min-height: 100%;
+    background:
+            linear-gradient(81deg,transparent 86.3%,#eee 86.3%,#eee),
+            linear-gradient(72deg,transparent 75.4%,#ddd 75.4%,#ddd),
+            linear-gradient(63deg,transparent 66.25%,#eee 66.25%,#eee),
+            linear-gradient(54deg,transparent 57.85%,#ddd 57.85%,#ddd),
+            linear-gradient(45deg,transparent 49.9%,#eee 49.9%,#eee),
+            linear-gradient(36deg,transparent 41.96%,#ddd 41.96%,#ddd),
+            linear-gradient(27deg,transparent 33.6%,#eee 33.6%,#eee),
+            linear-gradient(18deg,transparent 24.35%,#ddd 24.35%,#ddd),
+            linear-gradient(9deg,transparent 13.6%,#eee 13.6%,#eee);
+    background-position: 0 0;
+    background-color: #ddd;
+    /*background-size: 80px 80px;*/
+}
+
+
+h1 {
+    font-family: bloodynormal;
+    text-align: center;
+    color: red;
+    border-radius: 50%;
+    shape-outside: circle();
+}
+
+.col-sm-2.right {
+    font-family: bloodynormal;
+    text-align: right;
+}
+
+.col-sm-2.left {
+    font-family: bloodynormal;
+    text-align: left;
+}
+
+.modal-title {
+    font-family: bloodynormal;
+    text-align: center;
+}
