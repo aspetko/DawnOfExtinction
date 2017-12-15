@@ -75,12 +75,16 @@ function Board(context, numberOfRows, numberOfColumns, bounceOfTheBorder) {
                         // drawBarrier(ctx, random_x, random_y, FixedValues.fieldWidth, FixedValues.fieldWidth, "#FF0000" );
                         break;
                     case FixedValues.WEAPON_KNIFE:
+                        this.drawKnife(this.context, random_x, random_y, FixedValues.fieldWidth, FixedValues.fieldHeight, "#FFFFFF");
                         break;
                     case FixedValues.WEAPON_GUN:
+                        this.drawGun(this.context, random_x, random_y, FixedValues.fieldWidth, FixedValues.fieldHeight, "#FFFFFF");
                         break;
                     case FixedValues.WEAPON_FLAME_THROWER:
+                        this.drawFlameThrower(this.context, random_x, random_y, FixedValues.fieldWidth, FixedValues.fieldHeight, "#FFFFFF");
                         break;
                     case FixedValues.WEAPON_BOMB:
+                        this.drawBomb(this.context, random_x, random_y, FixedValues.fieldWidth, FixedValues.fieldHeight, "#FFFFFF");
                         break;
                 }
             } else {
@@ -266,16 +270,64 @@ function Board(context, numberOfRows, numberOfColumns, bounceOfTheBorder) {
         context.fill();
     }
 
-    this.drawWeapon = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
+    this.drawKnife = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
         context.beginPath();
         context.moveTo(x * fieldWidth+10, y * fieldHeight);
         context.lineTo(x * fieldWidth+10, y * fieldHeight+50);
-        context.lineTo(x * fieldWidth+40,  y * fieldHeight+10);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+50);
         context.fillStyle = fillStyle;
         context.closePath();
         context.stroke();
         context.fill();
     }
+
+    this.drawGun = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
+        context.beginPath();
+        context.moveTo(x * fieldWidth+10, y * fieldHeight);
+        context.lineTo(x * fieldWidth+100, y * fieldHeight);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+50);
+        context.fillStyle = fillStyle;
+        context.closePath();
+        context.stroke();
+        context.fill();
+    }
+
+    this.drawBomb = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
+        context.beginPath();
+        context.arc(x* fieldWidth+25, y*fieldHeight+25, 5, 0, 2 * Math.PI, false);
+        // context.fillStyle = fillStyle;
+        context.moveTo(x * fieldWidth+25, y * fieldHeight+20);
+        context.lineTo(x * fieldWidth+25, y * fieldHeight+10);
+        context.closePath();
+        context.fillStyle = 'black';
+        context.fill();
+        context.lineWidth = 5;
+        context.strokeStyle = '#003300';
+        context.stroke();
+    }
+    this.drawFlameThrower = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
+        context.beginPath();
+        context.moveTo(x * fieldWidth+10, y * fieldHeight);
+        context.lineTo(x * fieldWidth+100, y * fieldHeight);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+50);
+        context.fillStyle = fillStyle;
+        context.closePath();
+        context.stroke();
+        context.fill();
+    }
+
+/*
+    this.drawBomb = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
+        context.beginPath();
+        context.moveTo(x * fieldWidth+10, y * fieldHeight);
+        context.lineTo(x * fieldWidth+100, y * fieldHeight);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+50);
+        context.fillStyle = fillStyle;
+        context.closePath();
+        context.stroke();
+        context.fill();
+    }
+*/
 
     this.drawChessField = function(context, fieldWidth, fieldHeight, fillStyle, fillStyle2){
         for (var y = 0; y < 10; y++) {
@@ -311,15 +363,15 @@ function Board(context, numberOfRows, numberOfColumns, bounceOfTheBorder) {
 
     this.drawBarrier = function(context, x, y, fieldWidth, fieldHeight, fillStyle){
         context.beginPath();
-        context.moveTo(x * fieldWidth+10, y * fieldHeight);
-        context.lineTo(x * fieldWidth+40, y * fieldHeight);
-        context.lineTo(x * fieldWidth+50, y * fieldHeight+10);
-        context.lineTo(x * fieldWidth+50, y * fieldHeight+40);
-        context.lineTo(x * fieldWidth+40, y * fieldHeight+50);
-        context.lineTo(x * fieldWidth+10, y * fieldHeight+50);
-        context.lineTo(x * fieldWidth, y * fieldHeight+40);
-        context.lineTo(x * fieldWidth, y * fieldHeight+10);
-        context.lineTo(x * fieldWidth+10, y * fieldHeight);
+        context.moveTo(x * fieldWidth+15, y * fieldHeight+5);
+        context.lineTo(x * fieldWidth+45, y * fieldHeight+5);
+        context.lineTo(x * fieldWidth+55, y * fieldHeight+15);
+        context.lineTo(x * fieldWidth+55, y * fieldHeight+45);
+        context.lineTo(x * fieldWidth+45, y * fieldHeight+55);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+55);
+        context.lineTo(x * fieldWidth+5, y * fieldHeight+45);
+        context.lineTo(x * fieldWidth+5, y * fieldHeight+15);
+        context.lineTo(x * fieldWidth+15, y * fieldHeight+5);
         context.fillStyle = fillStyle;
         context.closePath();
         context.stroke();
@@ -428,21 +480,25 @@ window.onload = function(){
     GameEngine.KNIFE = new Weapon("KNIFE", 10);
 
     GameEngine.Board.drawEmptyChessField(ctx, FixedValues.fieldWidth, FixedValues.fieldHeight);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
-    GameEngine.Board.positionElementsByRandom(FixedValues.PLAYER_1);
-    GameEngine.Board.positionElementsByRandom(FixedValues.PLAYER_2);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.PLAYER_1);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.PLAYER_2);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.WEAPON_KNIFE);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.WEAPON_GUN);
+    // GameEngine.Board.positionElementsByRandom(FixedValues.WEAPON_FLAME_THROWER);
+    GameEngine.Board.positionElementsByRandom(FixedValues.WEAPON_BOMB);
 // Representation on the board
 
     if(document.addEventListener){
@@ -468,10 +524,6 @@ window.onload = function(){
 
 
 // Elements of the game...
-
-
-var X = 0;
-var Y = 1;
 
 
 
