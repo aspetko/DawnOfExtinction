@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../assets/js/jquery-3.2.1.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="GameEngine.js"></script>
-    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser-polyfill.min.js"></script>
+    <script src="GameEngine2.js"></script>
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/GameEngine.css" type="text/css" charset="utf-8"/>
 </head>
@@ -16,82 +15,32 @@
 <div>
     <h1>Dawn of Extinction</h1>
 </div>
-<div class="row">
-    <!--<div class="col-sm-2">-->
-        <!--<input type="radio" id="player1Radio1" name="playerName" checked onclick="GameEngine.switchPlayers(1)">Player 1-->
-    <!--</div>-->
-    <!--<div class="col-sm-2">-->
-        <!--<input type="radio" id="player2Radio1" name="playerName" onclick="GameEngine.switchPlayers(2)">Player 2-->
-    <!--</div>-->
-    <div class="col-sm-6">
-        <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal" data-target="#newGameModal">New Game</button>
-    </div>
-    <div class="col-sm-2">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#GameOverModal" onclick="gameOver('Ralph')">Game Over</button>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-2"><label>Moves:</label></div>
+            <div class="col-sm-2"><input type="text" value="3"></div>
+            <div class="col-sm-2"><button>Next...</button></div>
+        </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
-            <div class="row">
-                <div class="col-sm-2"><img alt="Cambodia Child Soilder" src="../assets/img/Cambodia.Body1_.jpg" style="min-width: 160px; max-width: 160px"></div>
-            </div>
-            <div class="row">
-                <fieldset>
-                    <legend>Player 1:</legend>
-                    <div class="col-sm-4">
-                        <label id="Current1" for="currentPlayerName">Current:</label>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="row">
-                <ul>
-                    <li id="superHeroDefaultWeapon"></li>
-                    <li id="knifeWeapon">Knife</li>
-                    <li id="gunWeapon">Gun</li>
-                    <li id="flameThrowerWeapon">Flamethrower</li>
-                    <li id="bombWeapon">Bomb</li>
-                    <li id="shield">Shield</li>
-                </ul>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 right"><img id="player1" alt="player 1" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 right" id="currentPlayerName"></div>
-            </div>
+            <div class="col-sm-2"><img alt="Cambodia Child Soilder" src="../assets/img/Cambodia.Body1_.jpg" style="min-width: 160px; max-width: 160px"></div>
+            <div class="col-sm-2 right" style="margin-top: 500px;white-space:  nowrap">Player 1:</div>
+            <div class="col-sm-2 right" style="margin-top: 520px"><img id="player1" alt="player 1" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
+            <div class="col-sm-2 right" style="margin-top: 610px">Alexander</div>
         </div>
         <div class="col-sm-8">
             <canvas id="board" width="600px" height="600px" style="border: 1px solid black;"/>
         </div>
         <div class="col-sm-2">
-            <div class="row">
-                <div class="col-sm-2"><img alt="Soilders" src="../assets/img/Golang Bootcamp (HQ).jpg" style="min-width: 160px; max-width: 160px"></div>
-            </div>
-            <fieldset>
-                <div class="row">
-                    <legend>Player 2:</legend>
-                    <div class="col-sm-4">
-                        <label id="Current2" for="currentPlayerName2">Current:</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <ul>
-                        <li id="superHeroDefaultWeapon2"></li>
-                        <li id="knifeWeapon2">Knife</li>
-                        <li id="gunWeapon2">Gun</li>
-                        <li id="flameThrowerWeapon2">Flamethrower</li>
-                        <li id="bombWeapon2">Bomb</li>
-                        <li id="shield2">Shield</li>
-                    </ul>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2 right"><img id="player2" alt="player 2" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2 right" id="currentPlayerName2"></div>
-                </div>
-            </fieldset>
+            <div class="col-sm-2"><img alt="Soilders" src="../assets/img/Golang Bootcamp (HQ).jpg" style="min-width: 160px; max-width: 160px"></div>
+            <div class="col-sm-2 right" style="margin-top: 500px;white-space:  nowrap">Player 2:</div>
+            <div class="col-sm-2 right" style="margin-top: 520px"><img id="player2" alt="player 2" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
+            <div class="col-sm-2 right" style="margin-top: 610px">Joshua</div>
         </div>
     </div>
 </div>
@@ -104,6 +53,12 @@
     </div>
     <div class="col-sm-3">
         <input type="number" min="0" max="100" step="10" id="tester" onclick="showResult()">
+    </div>
+    <div class="col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newGameModal">New Game</button>
+    </div>
+    <div class="col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#GameOverModal">Game Over</button>
     </div>
 </div>
 
@@ -122,6 +77,8 @@
                         <img class="splashImageNewGame" src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
                         Only two humans survived the World War III...<br>
                         ... but as long as there is more then one, there won't be peace!<br>
+                        "Peace has a price and the price is blood..."<br>
+                        Megadeth - Peace Sells...But Who's Buying?
                     </div>
                     <div class="col-md-8">
                         <fieldset>
@@ -156,36 +113,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="col-sm-4">
-                                        <label for="obstacles">Bounce Players:</label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="checkbox" id="bouncePlayer" checked>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="col-sm-4">
-                                        <label for="obstacles">Bounce Weapons:</label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="checkbox" id="bounceWeapon" checked>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="col-sm-4">
-                                        <label for="obstacles">Number of moves:</label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="number" id="numberOfMoves" min="1" max="3" value="3f">
-                                    </div>
-                                </div>
-                            </div>
                         </fieldset>
                             <div class="row">
                                 <fieldset>
@@ -207,16 +134,16 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class=class="row">
-                                                    <input type="radio" name="superhero" id="CV1" checked> Captain Volume
+                                                    <input type="radio" name="superhero" checked> Captain Volume
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="PH1" name="superhero"> Parry Hotter
+                                                    <input type="radio" name="superhero"> Parry Hotter
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="CL1" name="superhero"> Cara Loft
+                                                    <input type="radio" name="superhero"> Cara Loft
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="LT1" name="superhero"> Lord Tandump
+                                                    <input type="radio" name="superhero"> Lord Tandump
                                                 </div>
                                             </div>
                                         </div>
@@ -241,16 +168,16 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class=class="row">
-                                                    <input type="radio" id="CV2" name="superhero2" checked> Captain Volume
+                                                    <input type="radio" name="superhero2" checked> Captain Volume
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="PH2" name="superhero2"> Parry Hotter
+                                                    <input type="radio" name="superhero2"> Parry Hotter
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="CL2" name="superhero2"> Cara Loft
+                                                    <input type="radio" name="superhero2"> Cara Loft
                                                 </div>
                                                 <div class=class="row">
-                                                    <input type="radio" id="LT2" name="superhero2"> Lord Tandump
+                                                    <input type="radio" name="superhero2"> Lord Tandump
                                                 </div>
                                             </div>
                                         </div>
@@ -263,7 +190,6 @@
 <!--</div>-->
 <!--</div>-->
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GameEngine.newGame()">Start</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </div>
@@ -281,19 +207,8 @@
                 <h4 class="modal-title">Dawn of Extinction</h4>
             </div>
             <div class="modal-body">
-                <div class="container col-md-12">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <img  src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
-                        </div>
-                        <div class="col-md-5">
-                            <p id="message1"></p>
-                            <p id="message2"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                </div>
+                <p>Congratulation Player, you have won the challenge...</p>
+                <p>... but war does not have a winner.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

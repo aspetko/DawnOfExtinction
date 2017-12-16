@@ -62,7 +62,7 @@ legend {
     color: red;
 }
 
-#splashImageNewGame{
+.splashImageNewGame{
     margin-top: 100px;
     /*margin-left: 30px;*/
 }
