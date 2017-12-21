@@ -610,21 +610,6 @@ function Board() {
 
     this.drawFlameThrower = function(x, y){
         this.context.strokeStyle = 'red';
-        // this.context.beginPath();
-        // this.context.arc(x* GameEngine.fieldWidth+25, y*GameEngine.fieldHeight+25, 12, 0, 6.28, false);
-        // this.context.closePath();
-        // this.context.stroke();
-        // this.context.beginPath();
-        // this.context.arc(x* GameEngine.fieldWidth+25, y*GameEngine.fieldHeight+25, 11, 0, 6.28, false);
-        // this.context.closePath();
-        // this.context.stroke();
-        // this.context.beginPath();
-        // this.context.arc(x* GameEngine.fieldWidth+25, y*GameEngine.fieldHeight+25, 9, 0, 6.28, false);
-        // this.context.closePath();
-        // this.context.stroke();
-        // this.context.beginPath();
-        // this.context.arc(x* GameEngine.fieldWidth+25, y*GameEngine.fieldHeight+25, 7, 0, 6.28, false);
-        // this.context.closePath();
         var correct_x = 0, correct_y = 0;
         switch(GameEngine.factor){
             case 0: break;
@@ -693,6 +678,7 @@ function Board() {
     };
 
     this.unDrawMoveIfPossible = function(x, y){
+        console.log("unDrawMoveIfPossible(x, y)=>("+x+", "+y+")");
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
             if (GameEngine.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
                 console.log("bounceOfThePlayer "+this.bounceOfThePlayer);
@@ -774,7 +760,7 @@ function Board() {
     };
 
     this.unShowPossibleMoves = function(){
-        // console.log("unShowPossibleMoves called");
+        console.log("unShowPossibleMoves called");
         // x axis - left of figure
         for (count = 1; count < (Number(GameEngine.numberOfMoves) + 1) ; count++){
             var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
@@ -810,47 +796,79 @@ function Board() {
     this.drawEmptyChessFieldPossible = function(x, y){
         switch(GameEngine.factor){
             case 0:
-                this.context.strokeStyle = FixedValues.COLOR_WHITE;
-                this.context.strokeRect(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight, GameEngine.fieldWidth, GameEngine.fieldHeight);
-                this.context.stroke();
-                this.context.strokeStyle = FixedValues.COLOR_BLACK;
-                // this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+posy);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx, y * GameEngine.fieldHeight+60);
+                }
                 break;
             case 1:
-                this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+65, y * GameEngine.fieldHeight+posy+5);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx+5, y * GameEngine.fieldHeight+65);
+                }
                 break;
             case 2:
-                this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 75; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+72, y * GameEngine.fieldHeight+posy+12);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx+12, y * GameEngine.fieldHeight+72);
+                }
                 break;
             case 3:
-                this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+84, y * GameEngine.fieldHeight+posy+24);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx+24, y * GameEngine.fieldHeight+84);
+                }
                 break;
             case 4:
-                this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                this.context.moveTo(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight);
+                this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + 100);
+                this.context.moveTo(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight+15);
+                this.context.lineTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 100);
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+100, y * GameEngine.fieldHeight+posy+34);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx+34, y * GameEngine.fieldHeight+100);
+                }
                 break;
             case 5:
-                this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
+                for (var posx = 0, posy = 0; posx <= 120; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
+                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                }
+                this.context.moveTo(x * GameEngine.fieldWidth + 122, y * GameEngine.fieldHeight+15);
+                this.context.lineTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 122);
+                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.context.moveTo(x * GameEngine.fieldWidth+120, y * GameEngine.fieldHeight+posy+40);
+                    this.context.lineTo(x * GameEngine.fieldWidth+posx+40, y * GameEngine.fieldHeight+120);
+                }
                 break;
         }
-
-        //
-        // this.context.moveTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight);
-        // this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight+15);
-        // this.context.moveTo(x * GameEngine.fieldWidth+30, y * GameEngine.fieldHeight);
-        // this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight+30);
-        // this.context.moveTo(x * GameEngine.fieldWidth+45, y * GameEngine.fieldHeight);
-        // this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight+45);
-        // this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight);
-        // this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight+60);
-        // this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+15);
-        // this.context.lineTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight+60);
-        // this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+30);
-        // this.context.lineTo(x * GameEngine.fieldWidth+30, y * GameEngine.fieldHeight+60);
-        // this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+45);
-        // this.context.lineTo(x * GameEngine.fieldWidth+45, y * GameEngine.fieldHeight+60);
-        // this.context.stroke();
-        // this.context.strokeStyle = '#000';
+        this.context.stroke();
     };
+
+    this.drawLine = function(x, y, x2, y2){
+        this.context.moveTo(x, y);
+        this.context.lineTo(x2, y2);
+    }
 
     this.movePlayerLeft = function(){
         var player = GameEngine.currentPlayer;
