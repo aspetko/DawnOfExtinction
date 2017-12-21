@@ -107,9 +107,6 @@
     <div class="col-sm-7">
         <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal" data-target="#newGameModal">New Game</button>
     </div>
-    <!--<div class="col-sm-2">-->
-    <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#GameOverModal" onclick="gameOver('Ralph')">Game Over</button>-->
-    <!--</div>-->
 </div>
 <div class="modal modal-wide fade" id="newGameModal" role="dialog">
     <div class="modal-dialog">
@@ -133,20 +130,17 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="col-sm-4">
-                                        <label for="rows">Rows:</label>
+                                        <label for="dimension">Dimension:</label>
                                     </div>
                                     <div class="col-sm-2">
-                                        <input type="number" min="4" value="10" max="10" id="rows">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="col-sm-4">
-                                        <label for="cols">Columns:</label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="number" min="4" max="10" value="10" id="cols">
+                                        <select id="dimension">
+                                            <option>5*5</option>
+                                            <option>6*6</option>
+                                            <option>7*7</option>
+                                            <option>8*8</option>
+                                            <option>9*9</option>
+                                            <option selected>10*10</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +261,7 @@
                 <!--</div>-->
                 <!--</div>-->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GameEngine.newGame()">Start</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GameEngine.newGame()" id="newGameButton">Start</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
