@@ -1,0 +1,18 @@
+Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
+/////////////////////////////
+// TODO:
+////////////////////////////
+// - Redraw possible ways
+// - Count how many steps have been done
+// - When entering a field with a weapon, pick it up and if a differnt weapon is present put it down
+// - One move is the minimum
+// - Pick up and exchange the weapon
+/////////////////////////////
+//  Work In Progress
+/////////////////////////////
+
+/////////////////////////////
+// Done
+/////////////////////////////
+// - Draw possible moves
+// - drawEmptyChessFieldPossible adjust, width and hight when not 10*10 matrix is given

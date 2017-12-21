@@ -149,6 +149,11 @@ GameEngine.newGame = function () {
     $(document).keydown(function(e) {
         switch(e.which) {
             case FixedValues.END_MOVE: // Enter
+                if (GameEngine.currentPlayer.moveMadeThisTime === 0){
+                    console.log("Sorry, one move is minimum!");
+                } else {
+                    GameEngine.switchPlayer();
+                }
                 break;
             case FixedValues.LEFT:
                 GameEngine.Board.movePlayerLeft();
