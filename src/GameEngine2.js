@@ -1,31 +1,6 @@
 /**
  * Created by aspetko on 06.12.17.
  */
-/////////////////////////////
-// TODO:
-////////////////////////////
-// - Redraw possible ways
-// yes
-// - Count how many steps have been done
-// - When entering a field with a weapon, pick it up and if a differnt weapon is present put it down
-// - drawEmptyChessFieldPossible adjust, width and hight when not 10*10 matrix is given
-// - One move is the minimum
-// - Draw knive
-// - Draw flamethrower
-// - Draw possible moves
-// - Pick up and exchange the weapon
-////////////////////////////
-// Decison Matrix
-////////////////////////////
-//  Move                | No Move
-///////////////////////////
-// Shooting             | Switching between weapons
-// Taking up the shield |
-// - Player can move while shield is up
-// - Player can change direction while moving
-// - Possible directions are always shown
-// - Draw possible moves removing already taken steps
-
 ////////////////////////////
 // Create the Namespace
 ////////////////////////////
