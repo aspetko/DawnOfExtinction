@@ -303,21 +303,22 @@ function Board() {
     }
 
     this.drawEmptyChessField = function() {
+        this.context.fillStyle =  FixedValues.COLOR_BLACK;
+        this.context.strokeStyle =  FixedValues.COLOR_BLACK;
         this.context.beginPath();
         for (let x = 0, y = 0; x < GameEngine.numberOfColumns; x++) {
             this.context.moveTo(x * GameEngine.fieldWidth, y);
             this.context.lineTo(x * GameEngine.fieldWidth, 10 * GameEngine.fieldHeight);
             this.context.lineWidth = 1;
-            this.context.strokeStyle = FixedValues.COLOR_BLACK;
             this.context.stroke();
         }
         for (x = 0, y = 0; y < GameEngine.numberOfRows; y++) {
             this.context.moveTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight);
             this.context.lineTo(10 * GameEngine.fieldWidth, y * GameEngine.fieldHeight);
             this.context.lineWidth = 1;
-            this.context.strokeStyle = FixedValues.COLOR_BLACK;
             this.context.stroke();
         }
+        this.context.closePath();
     };
 
     this.positionElementsByRandom = function(element) {
@@ -404,26 +405,26 @@ function Board() {
         }
 
         let nr = GameEngine.currentPlayer.playerNr;
-        // console.log("Weapon found(x,y)-> "+x+", "+y);
+        console.log("Weapon found(x,y)-> ("+x+", "+y+")");
         // remember the old weapon, to disable it in the view
         let oldWeapon = "";
         if (GameEngine.currentPlayer.knifeWeapon) {
             oldWeapon = FixedValues.WEAPON_KNIFE;
-            disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
+            disableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
         } else if (GameEngine.currentPlayer.gunWeapon){
             oldWeapon = FixedValues.WEAPON_GUN;
-            disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
+            disableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
         } else if (GameEngine.currentPlayer.flameThrowerWeapon){
             oldWeapon = FixedValues.WEAPON_FLAME_THROWER;
-            disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
+            disableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
         } else if (GameEngine.currentPlayer.bombWeapon){
             oldWeapon = FixedValues.WEAPON_BOMB;
-            disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
+            disableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
         }
-        // console.log("oldWeapon: "+oldWeapon);
+        console.log("oldWeapon: "+oldWeapon);
 
         if (oldWeapon > 0){
-            // console.log("Put old weapon back");
+            console.log("Put old weapon back and set aria to dirty");
             GameEngine.Board.fields[x][y] = oldWeapon;
             GameEngine.Board.dirty = true;
         }
@@ -431,22 +432,22 @@ function Board() {
             case FixedValues.WEAPON_KNIFE:
                 GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.knifeWeapon = true;
-                enableWeaponsAndItems( nr==1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
+                enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
                 break;
             case FixedValues.WEAPON_GUN:
                 GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.gunWeapon = true;
-                enableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
+                enableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
                 break;
             case FixedValues.WEAPON_FLAME_THROWER:
                 GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.flameThrowerWeapon = true;
-                enableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
+                enableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
                 break;
             case FixedValues.WEAPON_BOMB:
                 GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.bombWeapon = true;
-                enableWeaponsAndItems( nr==1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
+                enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
                 break;
             default:
                 console.log("Error: there is no such weapon...: "+ newWeapon);
@@ -615,6 +616,7 @@ function Board() {
     };
 
     this.drawBomb = function(x, y){
+        console.log("drawBomb(x, y) called:", x, y);
         this.context.fillStyle =  FixedValues.COLOR_BLACK;
         this.context.strokeStyle =  FixedValues.COLOR_BLACK;
         this.context.beginPath();
@@ -653,7 +655,7 @@ function Board() {
     };
 
     this.drawFlameThrower = function(x, y){
-        this.context.strokeStyle = 'red';
+        // this.context.strokeStyle = 'red';
         let correct_x = 0, correct_y = 0;
         switch(GameEngine.factor){
             case 0: break;
@@ -675,24 +677,23 @@ function Board() {
                 correct_y = 28;
                 break;
         }
-        for (let i =0; i<7; i++){
-            this.context.beginPath();
-            this.context.arc(x* GameEngine.fieldWidth+21+(i*4)+correct_x, y*GameEngine.fieldHeight+29+correct_y, 12, 0, 6.28, false);
-            this.context.closePath();
-            this.context.stroke();
-            this.context.beginPath();
-            this.context.arc(x* GameEngine.fieldWidth+21+(i*4)+correct_x, y*GameEngine.fieldHeight+29+correct_y, 11, 0, 6.28, false);
-            this.context.closePath();
-            this.context.stroke();
-            this.context.beginPath();
-            this.context.arc(x* GameEngine.fieldWidth+21+(i*4)+correct_x, y*GameEngine.fieldHeight+29+correct_y, 9, 0, 6.28, false);
-            this.context.closePath();
-            this.context.stroke();
-            this.context.beginPath();
-            this.context.arc(x* GameEngine.fieldWidth+21+(i*4)+correct_x, y*GameEngine.fieldHeight+29+correct_y, 7, 0, 6.28, false);
-            this.context.closePath();
-        }
         this.context.stroke();
+        this.context.beginPath();
+        this.context.strokeStyle = '#000000';
+        this.context.fillRect(x* GameEngine.fieldWidth+1+3, y*GameEngine.fieldHeight+6+9, 52, 13);
+        this.context.fillRect(x* GameEngine.fieldWidth+1+3,  y*GameEngine.fieldHeight+6+22, 10, 20);
+        this.context.fillRect(x* GameEngine.fieldWidth+1+22,  y*GameEngine.fieldHeight+6+22, 8, 19);
+        this.context.ellipse(x* GameEngine.fieldWidth+40, y*GameEngine.fieldHeight+35+0, 3, 7, 180 * Math.PI/180, 0, 2 * Math.PI);
+        this.context.fill();
+        this.context.stroke();
+        this.context.moveTo(x* GameEngine.fieldWidth+1+13,  y*GameEngine.fieldHeight+6+30);
+        this.context.lineTo(x* GameEngine.fieldWidth+1+22,  y*GameEngine.fieldHeight+6+30);
+        this.context.stroke();
+        this.context.moveTo(x* GameEngine.fieldWidth+1+16,  y*GameEngine.fieldHeight+6+22);
+        this.context.lineTo(x* GameEngine.fieldWidth+1+16,  y*GameEngine.fieldHeight+6+26);
+        this.context.stroke();
+        this.context.strokeRect(x* GameEngine.fieldWidth+1+52,  y*GameEngine.fieldHeight+6+12, 6, 2);
+        this.context.closePath();
     };
 
     this.drawMoveIfPossible = function(x, y){
@@ -706,20 +707,20 @@ function Board() {
                 return true;
             }
         }
-        console.log("inside this.drawMoveIfPossible(x, y)", x, y);
+        // console.log("inside this.drawMoveIfPossible(x, y)", x, y);
         switch (this.fields[x][y]) {
             case FixedValues.EMPTY_FIELD:
             case FixedValues.WEAPON_KNIFE:
             case FixedValues.WEAPON_GUN:
             case FixedValues.WEAPON_FLAME_THROWER:
             case FixedValues.WEAPON_BOMB:
-                console.log("drawing field (x,y) ", x, y);
+                // console.log("drawing field (x,y) ", x, y);
                 this.drawEmptyChessFieldPossible(x, y);
                 return false;
             case FixedValues.PLAYER_1:
             case FixedValues.PLAYER_2:
             case FixedValues.BARRIER:
-                console.log("WTF (x,y) ", x, y, this.fields[x][y]);
+                // console.log("WTF (x,y) ", x, y, this.fields[x][y]);
                 return true;
         }
     };
@@ -780,7 +781,7 @@ function Board() {
     this.showPossibleMoves = function(){
         // first calculate the steps left for this move
         let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
-        console.log("stepsToDo:", stepsToDo);
+        // console.log("stepsToDo:", stepsToDo);
         // x axis - left of figure
         let count;
         for (count = 1; count <=stepsToDo; count++){
@@ -817,7 +818,7 @@ function Board() {
     this.unShowPossibleMoves = function(player, newX, newY){
         // first calculate the steps left for this move
         let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
-        console.log("stepsToDo:", stepsToDo);
+        // console.log("stepsToDo:", stepsToDo);
         // x axis - left of figure
         let count;
         for (count = 1; count <=stepsToDo; count++){
@@ -852,7 +853,7 @@ function Board() {
     };
 
     this.drawEmptyChessFieldPossible = function(x, y){
-        console.log("(",x, ", ", y, ")");
+        // console.log("(",x, ", ", y, ")");
         switch(GameEngine.factor){
             case 0:
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
@@ -1205,7 +1206,7 @@ function Player(name, playerState, playerNr, superHeroClass) {
         if (this.health === 100) {
             $("#" + this.playerState).css('background', 'green');
         } else if (this.health === '0') {
-            console.log("0");
+            // console.log("0");
             $("#"+this.playerState).css('background', 'red');
         } else {
             $("#"+this.playerState).css('background', 'linear-gradient(to bottom, red ' + this.health + '%, green 100%)');
