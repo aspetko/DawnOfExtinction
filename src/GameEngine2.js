@@ -41,8 +41,8 @@ function enableWeaponsAndItems(id){
 GameEngine.newGame = function () {
 
     // Set up the players
-    var pName1= $("#player1Name").val();
-    var pName2= $("#player2Name").val();
+    let pName1= $("#player1Name").val();
+    let pName2= $("#player2Name").val();
     // Players
     GameEngine.player1 = new Player(pName1, FixedValues.PLAYER_1_ID, FixedValues.PLAYER_1);
     GameEngine.player2 = new Player(pName2, FixedValues.PLAYER_2_ID, FixedValues.PLAYER_2);
@@ -51,7 +51,7 @@ GameEngine.newGame = function () {
     document.getElementById(FixedValues.CURRENT_PLAYER_NAME_2_ID).innerHTML = "<p>"+pName2+"</p>";
 
     // Calculate the board by user selection and set up additional parameters
-    var dimension = $( "#dimension" ).val();
+    let dimension = $( "#dimension" ).val();
     switch(dimension){
         case '10*10':
             GameEngine.numberOfColumns = 10;
@@ -92,7 +92,7 @@ GameEngine.newGame = function () {
     }
     GameEngine.numberOfObstacles = $(FixedValues.OBSTACLES_ID).val();
     GameEngine.numberOfMoves = $(FixedValues.NUMBER_OF_MOVES).val();
-    var board = document.getElementById(FixedValues.BOARD_ID);
+    let board = document.getElementById(FixedValues.BOARD_ID);
     GameEngine.fieldWidth = board.width / GameEngine.numberOfColumns;
     GameEngine.fieldHeight = board.height / GameEngine.numberOfRows;
 
@@ -107,8 +107,8 @@ GameEngine.newGame = function () {
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_ID).innerHTML = "<p>"+GameEngine.caraLoft.defaultWeapon+"</p>";
         GameEngine.player1.superHeroClass = GameEngine.caraLoft;
     } else if (document.getElementById(FixedValues.LT1_ID).checked){
-        document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_ID).innerHTML = "<p>"+GameEngine.lordTandump.defaultWeapon+"</p>";
-        GameEngine.player1.superHeroClass = GameEngine.lordTandump;
+        document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_ID).innerHTML = "<p>"+GameEngine.lordDumpnat.defaultWeapon+"</p>";
+        GameEngine.player1.superHeroClass = GameEngine.lordDumpnat;
     } else{
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_ID).innerHTML = "<p>Error: No more super heros defined</p>";
     }
@@ -124,8 +124,8 @@ GameEngine.newGame = function () {
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_2_ID).innerHTML = "<p>"+GameEngine.caraLoft.defaultWeapon+"</p>";
         GameEngine.player2.superHeroClass = GameEngine.caraLoft;
     } else if (document.getElementById(FixedValues.LT2_ID).checked){
-        document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_2_ID).innerHTML = "<p>"+GameEngine.lordTandump.defaultWeapon+"</p>";
-        GameEngine.player2.superHeroClass = GameEngine.lordTandump;
+        document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_2_ID).innerHTML = "<p>"+GameEngine.lordDumpnat.defaultWeapon+"</p>";
+        GameEngine.player2.superHeroClass = GameEngine.lordDumpnat;
     } else{
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_2_ID).innerHTML = "<p>Error: No more super heros defined</p>";
     }
@@ -202,7 +202,7 @@ GameEngine.newGame = function () {
     GameEngine.Board.drawEmptyChessField();
 
     // Representation on the board
-    for (var obstacles=0; obstacles<GameEngine.numberOfObstacles; obstacles++){
+    for (let obstacles=0; obstacles<GameEngine.numberOfObstacles; obstacles++){
         GameEngine.Board.positionElementsByRandom(FixedValues.BARRIER);
     }
     GameEngine.Board.positionElementsByRandom(FixedValues.PLAYER_1);
@@ -247,7 +247,7 @@ function showResult(){
 function Board() {
     this.bounceOfThePlayer = document.getElementById('bouncePlayer').checked;
     this.bounceOfTheWeapon = document.getElementById('bounceWeapon').checked;
-    var board = document.getElementById(FixedValues.BOARD_ID);
+    let board = document.getElementById(FixedValues.BOARD_ID);
     this.context = board.getContext("2d");
     this.dirty = false;
 
@@ -295,16 +295,16 @@ function Board() {
     };
 
     this.fields = new Array(GameEngine.numberOfColumns);
-    for (var x =0; x<GameEngine.numberOfColumns; x++){
+    for (let x =0; x<GameEngine.numberOfColumns; x++){
         this.fields[x] = new Array(GameEngine.numberOfRows);
-        for (var y=0;  y<GameEngine.numberOfRows; y++){
+        for (let y=0;  y<GameEngine.numberOfRows; y++){
             this.fields[x][y] = FixedValues.EMPTY_FIELD;
         }
     }
 
     this.drawEmptyChessField = function() {
         this.context.beginPath();
-        for (var x = 0, y = 0; x < GameEngine.numberOfColumns; x++) {
+        for (let x = 0, y = 0; x < GameEngine.numberOfColumns; x++) {
             this.context.moveTo(x * GameEngine.fieldWidth, y);
             this.context.lineTo(x * GameEngine.fieldWidth, 10 * GameEngine.fieldHeight);
             this.context.lineWidth = 1;
@@ -321,11 +321,11 @@ function Board() {
     };
 
     this.positionElementsByRandom = function(element) {
-        var done = false;
+        let done = false;
 
         while (!done){
-            var random_x = generateRandom(GameEngine.numberOfColumns);
-            var random_y = generateRandom(GameEngine.numberOfRows);
+            let random_x = generateRandom(GameEngine.numberOfColumns);
+            let random_y = generateRandom(GameEngine.numberOfRows);
             if (this.fields[random_x][random_y] === FixedValues.EMPTY_FIELD){
                 done = true;
                 this.fields[random_x][random_y] = element;
@@ -364,17 +364,17 @@ function Board() {
 
     this.debug = function() {
         console.group("Board:");
-        var output = "   ";
-        var sep ="";
-        for (var i =0; i<GameEngine.numberOfColumns; i++){
+        let output = "   ";
+        let sep ="";
+        for (let i =0; i<GameEngine.numberOfColumns; i++){
             output += sep+i;
             sep = " ";
         }
         output += "\n";
         sep =" ";
-        for (var y=0; y<GameEngine.numberOfRows; y++){
+        for (let y=0; y<GameEngine.numberOfRows; y++){
             output += y+"[";
-            for (var x=0; x<GameEngine.numberOfColumns; x++){
+            for (let x=0; x<GameEngine.numberOfColumns; x++){
                 output += sep+this.fields[x][y];
             }
             output += "]\n";
@@ -384,8 +384,8 @@ function Board() {
     };
 
     this.resetBoard = function(){
-        for (var y=0; y < GameEngine.numberOfColumns; y++){
-            for (var x=0; x < GameEngine.numberOfRows; x++){
+        for (let y=0; y < GameEngine.numberOfColumns; y++){
+            for (let x=0; x < GameEngine.numberOfRows; x++){
                 this.fields[x][y]=FixedValues.EMPTY_FIELD;
             }
         }
@@ -398,15 +398,15 @@ function Board() {
      * @param y the y - coordinate
      */
     this.pickUpWeapon = function(x,y){
-        var change = GameEngine.Board.fields[x][y];
+        let change = GameEngine.Board.fields[x][y];
         if (change === FixedValues.EMPTY_FIELD){
             return; // Nothing to do
         }
 
-        var nr = GameEngine.currentPlayer.playerNr;
+        let nr = GameEngine.currentPlayer.playerNr;
         // console.log("Weapon found(x,y)-> "+x+", "+y);
         // remember the old weapon, to disable it in the view
-        var oldWeapon = "";
+        let oldWeapon = "";
         if (GameEngine.currentPlayer.knifeWeapon) {
             oldWeapon = FixedValues.WEAPON_KNIFE;
             disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
@@ -654,7 +654,7 @@ function Board() {
 
     this.drawFlameThrower = function(x, y){
         this.context.strokeStyle = 'red';
-        var correct_x = 0, correct_y = 0;
+        let correct_x = 0, correct_y = 0;
         switch(GameEngine.factor){
             case 0: break;
             case 1: break;
@@ -675,7 +675,7 @@ function Board() {
                 correct_y = 28;
                 break;
         }
-        for (var i =0; i<7; i++){
+        for (let i =0; i<7; i++){
             this.context.beginPath();
             this.context.arc(x* GameEngine.fieldWidth+21+(i*4)+correct_x, y*GameEngine.fieldHeight+29+correct_y, 12, 0, 6.28, false);
             this.context.closePath();
@@ -706,17 +706,20 @@ function Board() {
                 return true;
             }
         }
+        console.log("inside this.drawMoveIfPossible(x, y)", x, y);
         switch (this.fields[x][y]) {
             case FixedValues.EMPTY_FIELD:
             case FixedValues.WEAPON_KNIFE:
             case FixedValues.WEAPON_GUN:
             case FixedValues.WEAPON_FLAME_THROWER:
             case FixedValues.WEAPON_BOMB:
+                console.log("drawing field (x,y) ", x, y);
                 this.drawEmptyChessFieldPossible(x, y);
                 return false;
             case FixedValues.PLAYER_1:
             case FixedValues.PLAYER_2:
             case FixedValues.BARRIER:
+                console.log("WTF (x,y) ", x, y, this.fields[x][y]);
                 return true;
         }
     };
@@ -775,138 +778,147 @@ function Board() {
     };
 
     this.showPossibleMoves = function(){
+        // first calculate the steps left for this move
+        let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
+        console.log("stepsToDo:", stepsToDo);
         // x axis - left of figure
-        var count;
-        for (count = 1; count < (Number(GameEngine.numberOfMoves) + 1) ; count++){
-            var stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
+        let count;
+        for (count = 1; count <=stepsToDo; count++){
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
         // x axis - right of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
+        for (count = 1; count <= stepsToDo ; count++){
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
 
         // y axis -  above of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
+        for (count = 1; count <= stepsToDo ; count++){
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
 
         // y axis - below of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
+        for (count =1; count <= stepsToDo ; count++){
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
     };
 
     this.unShowPossibleMoves = function(player, newX, newY){
+        // first calculate the steps left for this move
+        let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
+        console.log("stepsToDo:", stepsToDo);
         // x axis - left of figure
-        for (count = 1; count < (Number(GameEngine.numberOfMoves) + 1) ; count++){
-            var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
+        let count;
+        for (count = 1; count <=stepsToDo; count++){
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
         // x axis - right of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
+        for (count = 1; count <=stepsToDo; count++){
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
 
         // y axis -  above of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
+        for (count = 1; count <=stepsToDo; count++){
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
 
         // y axis - below of figure
-        for (count = 1; count < Number(GameEngine.numberOfMoves) + 1 ; count++){
-            var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
+        for (count = 1; count <=stepsToDo; count++){
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 2;
+                count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
     };
 
     this.drawEmptyChessFieldPossible = function(x, y){
+        console.log("(",x, ", ", y, ")");
         switch(GameEngine.factor){
             case 0:
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                 x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+posy);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx, y * GameEngine.fieldHeight+60);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+posy,
+                                  x * GameEngine.fieldWidth+posx, y * GameEngine.fieldHeight+60);
                 }
                 break;
             case 1:
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+65, y * GameEngine.fieldHeight+posy+5);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx+5, y * GameEngine.fieldHeight+65);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+65, y * GameEngine.fieldHeight+posy+5,
+                                  x * GameEngine.fieldWidth+posx+5, y * GameEngine.fieldHeight+65);
                 }
                 break;
             case 2:
-                for (var posx = 0, posy = 0; posx <= 75; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 75; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+72, y * GameEngine.fieldHeight+posy+12);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx+12, y * GameEngine.fieldHeight+72);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+72, y * GameEngine.fieldHeight+posy+12,
+                                  x * GameEngine.fieldWidth+posx+12, y * GameEngine.fieldHeight+72);
                 }
                 break;
             case 3:
-                for (var posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+84, y * GameEngine.fieldHeight+posy+24);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx+24, y * GameEngine.fieldHeight+84);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+84, y * GameEngine.fieldHeight+posy+24,
+                                  x * GameEngine.fieldWidth+posx+24, y * GameEngine.fieldHeight+84);
                 }
                 break;
             case 4:
-                for (var posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                this.context.moveTo(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight);
-                this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + 100);
-                this.context.moveTo(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight+15);
-                this.context.lineTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 100);
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+100, y * GameEngine.fieldHeight+posy+34);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx+34, y * GameEngine.fieldHeight+100);
+                this.drawLine(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight,
+                              x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + 100);
+                this.drawLine(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight+15,
+                              x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 100);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+100, y * GameEngine.fieldHeight+posy+34,
+                                  x * GameEngine.fieldWidth+posx+34, y * GameEngine.fieldHeight+100);
                 }
                 break;
             case 5:
-                for (var posx = 0, posy = 0; posx <= 120; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight);
-                    this.context.lineTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                for (let posx = 0, posy = 0; posx <= 120; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
+                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
-                this.context.moveTo(x * GameEngine.fieldWidth + 122, y * GameEngine.fieldHeight+15);
-                this.context.lineTo(x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 122);
-                for (var posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
-                    this.context.moveTo(x * GameEngine.fieldWidth+120, y * GameEngine.fieldHeight+posy+40);
-                    this.context.lineTo(x * GameEngine.fieldWidth+posx+40, y * GameEngine.fieldHeight+120);
+                this.drawLine(x * GameEngine.fieldWidth + 122, y * GameEngine.fieldHeight+15,
+                              x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 122);
+                for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
+                    this.drawLine(x * GameEngine.fieldWidth+120, y * GameEngine.fieldHeight+posy+40,
+                                  x * GameEngine.fieldWidth+posx+40, y * GameEngine.fieldHeight+120);
                 }
                 break;
         }
@@ -919,13 +931,13 @@ function Board() {
     };
 
     this.movePlayerLeft = function(){
-        var player = GameEngine.currentPlayer;
+        let player = GameEngine.currentPlayer;
         if (player.pos_x == 0){ // leftmost column, continue on the right column ...
             console.log("leftmost column, continue on the right column ...");
             if (GameEngine.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
             } else {
-                var newPos = GameEngine.numberOfColumns-1;
+                let newPos = GameEngine.numberOfColumns-1;
                 if (this.canMove(newPos, player.pos_y)){
                     this.movePlayerMatrix(player, newPos, player.pos_y);
                 } else {
@@ -933,25 +945,24 @@ function Board() {
                 }
             }
         } else { // check if element left is accessible
-            var x = player.pos_x - 1;
+            let x = player.pos_x - 1;
             if (this.canMove(x, player.pos_y)){
                 this.movePlayerMatrix(player, x, player.pos_y);
             } else {
                 console.log("Move not possible, field occupied");
             }
         }
-        this.debugPlayer();
 
     };
 
     this.movePlayerRight = function(){
-        var player = GameEngine.currentPlayer;
+        let player = GameEngine.currentPlayer;
         if (player.pos_x == GameEngine.numberOfColumns-1){ // rightmost column, continue on the left ...
             console.log("rightmost column, continue on the right column ...");
             if (GameEngine.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
             } else {
-                var newPos = 0;
+                let newPos = 0;
                 if (this.canMove(newPos, player.pos_y)){
                     this.movePlayerMatrix(player, newPos, player.pos_y);
                 } else {
@@ -959,7 +970,7 @@ function Board() {
                 }
             }
         } else { // check if element right is not a barrier
-            var x = player.pos_x + 1;
+            let x = player.pos_x + 1;
             if (this.canMove(x, player.pos_y)){
                 this.movePlayerMatrix(player, x, player.pos_y);
             } else {
@@ -969,14 +980,14 @@ function Board() {
     };
 
     this.movePlayerUp = function(){
-        var player = GameEngine.currentPlayer;
+        let player = GameEngine.currentPlayer;
         // this.debugPlayer(player);
         if (player.pos_y == 0){ // topmost row, continue on the lowest row ...
             console.log("topmost row, continue on the lowest row ...");
             if (GameEngine.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
             } else {
-                var newPos = GameEngine.numberOfRows-1;
+                let newPos = GameEngine.numberOfRows-1;
                 if (this.canMove(player.pos_x, newPos)){
                     this.movePlayerMatrix(player, player.pos_x, player.pos_y-1);
                 } else {
@@ -984,7 +995,7 @@ function Board() {
                 }
             }
         } else { // check if element above is not a barrier
-            var y = player.pos_y - 1;
+            let y = player.pos_y - 1;
             if (this.canMove(player.pos_x, y)){
                 this.movePlayerMatrix(player, player.pos_x, y);
             } else {
@@ -993,15 +1004,15 @@ function Board() {
         }
     };
 
-    this.movePlayerDown = function(player){
-        var player = GameEngine.currentPlayer;
+    this.movePlayerDown = function(){
+        let player = GameEngine.currentPlayer;
         // this.debugPlayer(player);
         if (player.pos_y == GameEngine.numberOfRows-1){ // lowest row, continue on the topmost row ...
             console.log("lowest row, continue on the topmost row ...");
             if (this.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
             } else {
-                var newPos = 0;
+                let newPos = 0;
                 if (this.canMove(player.pos_x, newPos)){
                     this.movePlayerMatrix(player, player.pos_x, player.pos_y+1);
                 } else {
@@ -1009,7 +1020,7 @@ function Board() {
                 }
             }
         } else { // check if element below is not a barrier
-            var y = player.pos_y + 1;
+            let y = player.pos_y + 1;
             if (this.canMove(player.pos_x, y)){
                 this.movePlayerMatrix(player, player.pos_x, y);
             } else {
@@ -1068,7 +1079,10 @@ function Board() {
         // GameEngine.Board.debug();
         // console.log(GameEngine.currentPlayer);
 
-        if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)-1){
+        player.movesMadeThisTime ++ ;
+        this.debugPlayer();
+
+        if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
             GameEngine.switchPlayer();
             this.showPossibleMoves();
         } else {
@@ -1173,8 +1187,8 @@ function Player(name, playerState, playerNr, superHeroClass) {
 
     this.showDamage = new function () {
         // this.health -= damage;
-        // var line = document.getElementById("tester").value; // TODO: exchange by real event
-        var line = 100;
+        // let line = document.getElementById("tester").value; // TODO: exchange by real event
+        let line = 100;
         switch(line){
             case '0':  this.health = 100; break;
             case '100': this.health = 0;break;
@@ -1260,7 +1274,7 @@ window.onload = function(){
     GameEngine.player2 = null;
 
     // Physical Board
-    var board = document.getElementById(FixedValues.BOARD_ID);
+    let board = document.getElementById(FixedValues.BOARD_ID);
     FixedValues.fieldWidth = -1;
     FixedValues.fieldHeight = -1;
     GameEngine.numberOfColumns = -1;
@@ -1272,7 +1286,7 @@ window.onload = function(){
     GameEngine.captainVolume = new SuperHero("Captain Volume", "Super Sonic Sound");
     GameEngine.parryHotter = new SuperHero("Parry Hotter", "Magic Spell");
     GameEngine.caraLoft = new SuperHero("Cara Loft", "Power Seduce Beam");
-    GameEngine.lordTandump = new SuperHero("Lord Tandump", "Alternative Truth Beam");
+    GameEngine.lordDumpnat = new SuperHero("Lord Dumpnat", "Alternative Truth Beam");
 
     // Keyboard control
     FixedValues.LEFT = 37;
