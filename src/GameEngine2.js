@@ -1054,23 +1054,29 @@ function Board() {
                     console.log("Draw Knife "+player.pos_x+", "+player.pos_y);
                     this.drawKnife(player.pos_x, player.pos_y);
                     this.dirty = false;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_KNIFE;
                     break;
                 case FixedValues.WEAPON_GUN:
                     console.log("Draw GUN: "+player.pos_x+", "+player.pos_y);
                     this.drawGun(player.pos_x, player.pos_y);
                     this.dirty = false;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_GUN;
                     break;
                 case FixedValues.WEAPON_FLAME_THROWER:
                     console.log("Draw FT "+player.pos_x+", "+player.pos_y);
                     this.drawFlameThrower(player.pos_x, player.pos_y);
                     this.dirty = false;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_FLAME_THROWER;
                     break;
                 case FixedValues.WEAPON_BOMB:
                     console.log("Draw Bomb "+player.pos_x+", "+player.pos_y);
                     this.drawBomb(player.pos_x, player.pos_y);
                     this.dirty = false;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_BOMB;
                     break;
             }
+        } else {
+            this.fields[player.pos_x][player.pos_y] = FixedValues.EMPTY_FIELD;
         }
         this.fields[newX][newY] = player.playerNr;
         player.pos_x = newX;
