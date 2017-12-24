@@ -71,8 +71,8 @@ GameEngine.newGame = function () {
         document.getElementById("superHeroDefaultWeapon").innerHTML = "<p>"+GameEngine.caraLoft.defaultWeapon+"</p>";
         GameEngine.player1.superHeroClass = GameEngine.caraLoft;
     } else if (document.getElementById('LT1').checked){
-        document.getElementById("superHeroDefaultWeapon").innerHTML = "<p>"+GameEngine.lordTandump.defaultWeapon+"</p>";
-        GameEngine.player1.superHeroClass = GameEngine.lordTandump;
+        document.getElementById("superHeroDefaultWeapon").innerHTML = "<p>"+GameEngine.lordDumpnat.defaultWeapon+"</p>";
+        GameEngine.player1.superHeroClass = GameEngine.lordDumpnat;
     } else{
         document.getElementById("superHeroDefaultWeapon").innerHTML = "<p>Error: No more super heros defined</p>";
     }
@@ -88,8 +88,8 @@ GameEngine.newGame = function () {
         document.getElementById("superHeroDefaultWeapon2").innerHTML = "<p>"+GameEngine.caraLoft.defaultWeapon+"</p>";
         GameEngine.player2.superHeroClass = GameEngine.caraLoft;
     } else if (document.getElementById('LT2').checked){
-        document.getElementById("superHeroDefaultWeapon2").innerHTML = "<p>"+GameEngine.lordTandump.defaultWeapon+"</p>";
-        GameEngine.player2.superHeroClass = GameEngine.lordTandump;
+        document.getElementById("superHeroDefaultWeapon2").innerHTML = "<p>"+GameEngine.lordDumpnat.defaultWeapon+"</p>";
+        GameEngine.player2.superHeroClass = GameEngine.lordDumpnat;
     } else{
         document.getElementById("superHeroDefaultWeapon2").innerHTML = "<p>Error: No more super heros defined</p>";
     }
@@ -502,7 +502,7 @@ window.onload = function(){
     GameEngine.captainVolume = new SuperHero("Captain Volume", "Super Sonic Sound");
     GameEngine.parryHotter = new SuperHero("Parry Hotter", "Magic Spell");
     GameEngine.caraLoft = new SuperHero("Cara Loft", "Power Seduce Beam");
-    GameEngine.lordTandump = new SuperHero("Lord Tandump", "Alternative Truth Beam");
+    GameEngine.lordDumpnat = new SuperHero("Lord Tandump", "Alternative Truth Beam");
 
     // Keyboard control
     FixedValues.LEFT = 37;

@@ -1,0 +1,16 @@
+////////////////////////////
+// Decison Matrix
+////////////////////////////
+//  Move                | No Move
+///////////////////////////
+// Shooting             | Switching between weapons
+// Taking up the shield |
+// - Player can move while shield is up
+// - Player can change direction while moving
+// - Possible directions are always shown
+// - Draw possible moves removing already taken steps
+
+// - One move is the minimum
+// - Draw possible moves
+// - Pick up and exchange the weapon
+

@@ -1,0 +1,23 @@
+Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
+/////////////////////////////
+// TODO:
+////////////////////////////
+// - When entering a field with a weapon, pick it up and if a different weapon is present put it down
+// - BUG: Weapons disapear when walking next to them without touching
+// - Implement Bounce of the border
+
+/////////////////////////////
+//  Work In Progress
+/////////////////////////////
+
+/////////////////////////////
+// Done
+/////////////////////////////
+// - One move is the minimum
+// - Draw possible moves
+// - drawEmptyChessFieldPossible adjust, width and hight when not 10*10 matrix is given
+// - Redraw possible ways
+// - Count how many steps have been done
+// - Switch player after the max moves are done
+// - Reduce the maximum possible steps by the moves already done
+// - BUG: Sometimes the player is not set correct on the board.
