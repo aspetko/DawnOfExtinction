@@ -31,7 +31,6 @@ function enableWeaponsAndItems(id){
     document.getElementById(id).style.opacity = "1";
 }
 
-
 ///////////////////////////
 // Game Control
 ///////////////////////////
@@ -59,31 +58,31 @@ GameEngine.newGame = function () {
             GameEngine.numberOfRows = 10;
             GameEngine.corrector = 0;
             GameEngine.factor = 0;
-            break
+            break;
         case '9*9':
             GameEngine.numberOfColumns = 9;
             GameEngine.numberOfRows = 9;
             GameEngine.corrector = 8;
             GameEngine.factor = 1;
-            break
+            break;
         case '8*8':
             GameEngine.numberOfColumns = 8;
             GameEngine.numberOfRows = 8;
             GameEngine.corrector = 16;
             GameEngine.factor = 2;
-            break
+            break;
         case '7*7':
             GameEngine.numberOfColumns = 7;
             GameEngine.numberOfRows = 7;
             GameEngine.factor = 3;
             GameEngine.corrector = 25;
-            break
+            break;
         case '6*6':
             GameEngine.numberOfColumns = 6;
             GameEngine.numberOfRows = 6;
             GameEngine.corrector = 40;
             GameEngine.factor = 4;
-            break
+            break;
         case '5*5':
             GameEngine.numberOfColumns = 5;
             GameEngine.numberOfRows = 5;
@@ -149,19 +148,21 @@ GameEngine.newGame = function () {
     $(document).keydown(function(e) {
         switch(e.which) {
             case FixedValues.END_MOVE: // Enter
-                if (GameEngine.currentPlayer.moveMadeThisTime === 0){
+                if (GameEngine.currentPlayer.movesMadeThisTime === 0){
                     console.log("Sorry, one move is minimum!");
                 } else {
                     GameEngine.switchPlayer();
                 }
                 break;
             case FixedValues.LEFT:
+                GameEngine.Board.debug();
                 GameEngine.Board.movePlayerLeft();
-                GameEngine.moveMade();
                 break;
             case FixedValues.SHOOT:
-                GameEngine.moveMade();
                 GameEngine.Board.fire();
+                break;
+            case FixedValues.SHOOT_SUPER_HERO_WEAPON:
+                GameEngine.Board.fireSuperHeroWeapon();
                 break;
             case FixedValues.SHIELD:
                 if (GameEngine.currentPlayer.shield){
@@ -174,18 +175,19 @@ GameEngine.newGame = function () {
                 break;
             case FixedValues.UP:
                 GameEngine.Board.movePlayerUp();
-                GameEngine.moveMade();
+                GameEngine.Board.debug();
                 break;
             case FixedValues.RIGHT:
                 GameEngine.Board.movePlayerRight();
-                GameEngine.moveMade();
+                GameEngine.Board.debug();
                 break;
             case FixedValues.DOWN:
                 GameEngine.Board.movePlayerDown();
-                GameEngine.moveMade();
+                GameEngine.Board.debug();
                 break;
             case FixedValues.CHANGE_WEAPON:
                 GameEngine.Board.changeWeapon();
+                GameEngine.Board.debug();
                 break;
             default:
                 // console.log(e.which);
@@ -193,6 +195,7 @@ GameEngine.newGame = function () {
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
     });
+
 
     GameEngine.Board = new Board();
     GameEngine.Board.resetBoard(); // Just to be sure...
@@ -229,8 +232,8 @@ GameEngine.switchPlayer = function() {
 };
 
 GameEngine.moveMade = function(){
-    GameEngine.currentPlayer.moveMadeThisTime += 1;
-    console.log(GameEngine.currentPlayer.moveMadeThisTime+" move(s) made");
+    GameEngine.currentPlayer.movesMadeThisTime += 1;
+    console.log(GameEngine.currentPlayer.movesMadeThisTime+" move(s) made");
 };
 
 function showResult(){
@@ -246,11 +249,49 @@ function Board() {
     this.bounceOfTheWeapon = document.getElementById('bounceWeapon').checked;
     var board = document.getElementById(FixedValues.BOARD_ID);
     this.context = board.getContext("2d");
+    this.dirty = false;
+
+    this.debugPlayer0 = function(player){
+        console.dir(player);
+    };
 
     this.debugPlayer = function(player){
-        console.log("player.pos_x: "+player.pos_x);
-        console.log("player.pos_y: "+player.pos_y);
+        console.groupCollapsed("Player:");
         console.log("player.playerNr: "+player.playerNr);
+        console.log("player.pos(x, y): (%d, %d)",player.pos_x, player.pos_y);
+        console.log("moves:"+ player.movesMadeThisTime);
+        console.log("KNIFE:"+player.knifeWeapon);
+        console.log("GUN:"+player.gunWeapon);
+        console.log("flameThrower:"+player.flameThrowerWeapon);
+        console.log("Bomb:"+player.bombWeapon);
+        console.groupEnd();
+    };
+
+    this.debugPlayer = function(){
+        console.group("Current Player:")
+        console.log("player.playerNr: %d", GameEngine.currentPlayer.playerNr);
+        console.log("player.pos(x, y): (%d, %d)",GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y);
+        console.log("moves: %d", GameEngine.currentPlayer.movesMadeThisTime);
+        console.groupCollapsed("Weapons:");
+        console.log("KNIFE:        ", GameEngine.currentPlayer.knifeWeapon);
+        console.log("GUN:          ", GameEngine.currentPlayer.gunWeapon);
+        console.log("flameThrower: ", GameEngine.currentPlayer.flameThrowerWeapon);
+        console.log("Bomb:         ", GameEngine.currentPlayer.bombWeapon);
+        console.groupEnd();
+        console.groupEnd();
+
+    };
+
+    this.debugPlayer0 = function(){
+        console.dir(GameEngine.currentPlayer);
+        // console.log("GameEngine.currentPlayer.pos_x: "+GameEngine.currentPlayer.pos_x);
+        // console.log("GameEngine.currentPlayer.pos_y: "+GameEngine.currentPlayer.pos_y);
+        // console.log("GameEngine.currentPlayer.GameEngine.currentPlayerNr: "+GameEngine.currentPlayer.playerNr);
+        // console.log("moves:"+ GameEngine.currentPlayer.movesMadeThisTime);
+        // console.log("KNIFE:"+GameEngine.currentPlayer.knifeWeapon);
+        // console.log("GUN:"+GameEngine.currentPlayer.gunWeapon);
+        // console.log("flameThrower:"+GameEngine.currentPlayer.flameThrowerWeapon);
+        // console.log("Bomb:"+GameEngine.currentPlayer.bombWeapon);
     };
 
     this.fields = new Array(GameEngine.numberOfColumns);
@@ -322,6 +363,7 @@ function Board() {
     };
 
     this.debug = function() {
+        console.group("Board:");
         var output = "   ";
         var sep ="";
         for (var i =0; i<GameEngine.numberOfColumns; i++){
@@ -338,6 +380,7 @@ function Board() {
             output += "]\n";
         }
         console.log(output);
+        console.groupEnd();
     };
 
     this.resetBoard = function(){
@@ -360,10 +403,10 @@ function Board() {
             return; // Nothing to do
         }
 
-        console.log("(x,y)-> "+x+", "+y);
+        var nr = GameEngine.currentPlayer.playerNr;
+        // console.log("Weapon found(x,y)-> "+x+", "+y);
         // remember the old weapon, to disable it in the view
         var oldWeapon = "";
-        var nr = GameEngine.currentPlayer.playerNr;
         if (GameEngine.currentPlayer.knifeWeapon) {
             oldWeapon = FixedValues.WEAPON_KNIFE;
             disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
@@ -377,43 +420,39 @@ function Board() {
             oldWeapon = FixedValues.WEAPON_BOMB;
             disableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
         }
-        console.log("oldWeapon: "+oldWeapon);
+        // console.log("oldWeapon: "+oldWeapon);
+
+        if (oldWeapon > 0){
+            // console.log("Put old weapon back");
+            GameEngine.Board.fields[x][y] = oldWeapon;
+            GameEngine.Board.dirty = true;
+        }
         switch(change){
             case FixedValues.WEAPON_KNIFE:
-                console.log("newWeapon: KNIFE");
+                GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.knifeWeapon = true;
-                if (oldWeapon.length >0){
-                    GameEngine.Board.fields[x][y] = oldWeapon;
-                }
                 enableWeaponsAndItems( nr==1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
                 break;
             case FixedValues.WEAPON_GUN:
-                console.log("newWeapon: GUN");
+                GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.gunWeapon = true;
-                if (oldWeapon.length >0){
-                    GameEngine.Board.fields[x][y] = oldWeapon;
-                }
                 enableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
                 break;
             case FixedValues.WEAPON_FLAME_THROWER:
-                console.log("newWeapon: flameThrower");
+                GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.flameThrowerWeapon = true;
-                if (oldWeapon.length >0){
-                    GameEngine.Board.fields[x][y] = oldWeapon;
-                }
                 enableWeaponsAndItems(nr==1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
                 break;
             case FixedValues.WEAPON_BOMB:
-                console.log("newWeapon: bomb");
+                GameEngine.currentPlayer.resetWeapons();
                 GameEngine.currentPlayer.bombWeapon = true;
-                if (oldWeapon.length >0){
-                    GameEngine.Board.fields[x][y] = oldWeapon;
-                }
                 enableWeaponsAndItems( nr==1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
                 break;
             default:
+                console.log("Error: there is no such weapon...: "+ newWeapon);
                 return;
         }
+        // this.debugPlayer();
     };
 
     this.drawBarrier0 = function(x, y){
@@ -682,8 +721,21 @@ function Board() {
         }
     };
 
+    this.clearField = function(x, y){
+        this.context.clearRect(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight, GameEngine.fieldWidth, GameEngine.fieldHeight);
+        this.context.beginPath();
+        this.context.rect(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight, GameEngine.fieldWidth, GameEngine.fieldHeight);
+        // this.context.fillStyle = "#FFF";
+        this.context.closePath();
+        this.context.lineWidth = 1;
+        this.context.stroke();
+        // this.context.fill();
+        // this.drawEmptyChessFieldPossible(x, y);
+    };
+
+
+
     this.unDrawMoveIfPossible = function(x, y){
-        console.log("unDrawMoveIfPossible(x, y)=>("+x+", "+y+")");
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
             if (GameEngine.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
                 console.log("bounceOfThePlayer "+this.bounceOfThePlayer);
@@ -694,45 +746,37 @@ function Board() {
                 return true;
             }
         }
-        // clear the field
-        this.context.beginPath();
-        this.context.moveTo(x * GameEngine.fieldWidth, y);
-        this.context.lineTo(x * GameEngine.fieldWidth, 10 * GameEngine.fieldHeight);
-        this.context.lineWidth = 1;
-        this.context.strokeStyle = FixedValues.COLOR_BLACK;
-        this.context.stroke();
-        this.context.moveTo(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight);
-        this.context.lineTo(10 * GameEngine.fieldWidth, y * GameEngine.fieldHeight);
-        this.context.lineWidth = 1;
-        this.context.strokeStyle = "#000";
-        this.context.stroke();
-
+        // Clear the field
         switch (this.fields[x][y]) {
-            case FixedValues.EMPTY_FIELD:
-                this.drawEmptyChessFieldPossible(x, y);
-                return false;
-            case FixedValues.WEAPON_KNIFE:
-                this.drawKnife(x, y);
-                return false;
-            case FixedValues.WEAPON_GUN:
-                this.drawGun(x, y);
-                return false;
-            case FixedValues.WEAPON_FLAME_THROWER:
-                this.drawFlameThrower(x, y);
-                return false;
-            case FixedValues.WEAPON_BOMB:
-                this.drawEmptyChessField();
-                return false;
-            case FixedValues.PLAYER_1:
-            case FixedValues.PLAYER_2:
-            case FixedValues.BARRIER:
-                return true;
-        }
+                case FixedValues.EMPTY_FIELD:
+                    this.clearField(x, y);
+                    return false;
+                case FixedValues.WEAPON_KNIFE:
+                    this.clearField(x, y);
+                    this.drawKnife(x, y);
+                    return false;
+                case FixedValues.WEAPON_GUN:
+                    this.clearField(x, y);
+                    this.drawGun(x, y);
+                    return false;
+                case FixedValues.WEAPON_FLAME_THROWER:
+                    this.clearField(x, y);
+                    this.drawFlameThrower(x, y);
+                    return false;
+                case FixedValues.WEAPON_BOMB:
+                    this.clearField(x, y);
+                    this.drawBomb();
+                    return false;
+                case FixedValues.PLAYER_1:
+                case FixedValues.PLAYER_2:
+                case FixedValues.BARRIER:
+                    return true;
+            }
     };
 
     this.showPossibleMoves = function(){
-        console.log("showPossibleMoves called");
         // x axis - left of figure
+        var count;
         for (count = 1; count < (Number(GameEngine.numberOfMoves) + 1) ; count++){
             var stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
             if (stop) {
@@ -764,8 +808,7 @@ function Board() {
         }
     };
 
-    this.unShowPossibleMoves = function(){
-        console.log("unShowPossibleMoves called");
+    this.unShowPossibleMoves = function(player, newX, newY){
         // x axis - left of figure
         for (count = 1; count < (Number(GameEngine.numberOfMoves) + 1) ; count++){
             var stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
@@ -873,7 +916,7 @@ function Board() {
     this.drawLine = function(x, y, x2, y2){
         this.context.moveTo(x, y);
         this.context.lineTo(x2, y2);
-    }
+    };
 
     this.movePlayerLeft = function(){
         var player = GameEngine.currentPlayer;
@@ -897,6 +940,8 @@ function Board() {
                 console.log("Move not possible, field occupied");
             }
         }
+        this.debugPlayer();
+
     };
 
     this.movePlayerRight = function(){
@@ -974,28 +1019,60 @@ function Board() {
     };
 
     this.fire = function () {
+        GameEngine.moveMade();
         console.log("Fire called");
     };
 
+    this.fireSuperHeroWeapon = function(){
+        GameEngine.moveMade();
+        console.log("FireSuperHeroWeapon called");
+    };
+
     this.movePlayerMatrix = function(player, newX, newY){
-        this.unShowPossibleMoves();
+        this.unShowPossibleMoves(player, newX, newY);
         this.redraw(player.pos_x, player.pos_y, player.playerNr, newX, newY);
-        console.log("Before: ("+player.pos_x+", "+player.pos_y+")->("+newX+", "+newY+")");
+        // console.log("Before: ("+player.pos_x+", "+player.pos_y+")->("+newX+", "+newY+")");
         //GameEngine.Board.debug();
-        this.fields[player.pos_x][player.pos_y] = 0;
+        // this.fields[player.pos_x][player.pos_y] = 0;
         this.pickUpWeapon(newX, newY);
+        if (this.dirty){
+            console.log("dirty called");
+            this.clearField(player.pos_x, player.pos_y);
+            switch(this.fields[player.pos_x][player.pos_y]){
+                case FixedValues.WEAPON_KNIFE:
+                    console.log("Draw Knife "+player.pos_x+", "+player.pos_y);
+                    this.drawKnife(player.pos_x, player.pos_y);
+                    this.dirty = false;
+                    break;
+                case FixedValues.WEAPON_GUN:
+                    console.log("Draw GUN: "+player.pos_x+", "+player.pos_y);
+                    this.drawGun(player.pos_x, player.pos_y);
+                    this.dirty = false;
+                    break;
+                case FixedValues.WEAPON_FLAME_THROWER:
+                    console.log("Draw FT "+player.pos_x+", "+player.pos_y);
+                    this.drawFlameThrower(player.pos_x, player.pos_y);
+                    this.dirty = false;
+                    break;
+                case FixedValues.WEAPON_BOMB:
+                    console.log("Draw Bomb "+player.pos_x+", "+player.pos_y);
+                    this.drawBomb(player.pos_x, player.pos_y);
+                    this.dirty = false;
+                    break;
+            }
+        }
         this.fields[newX][newY] = player.playerNr;
         player.pos_x = newX;
         player.pos_y = newY;
-        console.log("After: "+player.pos_x+" "+player.pos_y);
+        // console.log("After: "+player.pos_x+" "+player.pos_y);
         // GameEngine.Board.debug();
         // console.log(GameEngine.currentPlayer);
 
-        if (GameEngine.currentPlayer.moveMadeThisTime >= Number(GameEngine.numberOfMoves)-1){
+        if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)-1){
             GameEngine.switchPlayer();
-            // this.showPossibleMoves();
+            this.showPossibleMoves();
         } else {
-            // this.showPossibleMoves();
+            this.showPossibleMoves();
         }
     };
 
@@ -1009,7 +1086,7 @@ function Board() {
         this.context.lineWidth = 1;
         this.context.stroke();
         // this.context.fill();
-        this.debug();
+        // this.debug();
         switch(GameEngine.Board.fields[x][y]){
             case FixedValues.WEAPON_KNIFE:
                 this.drawKnife(x, y);
@@ -1064,7 +1141,7 @@ function SuperHero(name, defaultWeapon){
  * @param playerNr the id
  * @constructor
  */
-function Player(name, playerState, playerNr) {
+function Player(name, playerState, playerNr, superHeroClass) {
     this.name = name;
     this.playerNr = playerNr;
     this.playerState = playerState;
@@ -1076,15 +1153,23 @@ function Player(name, playerState, playerNr) {
     this.gunWeapon = false;
     this.flameThrowerWeapon = false;
     this.bombWeapon = false;
-    this.moveMadeThisTime = 0;
+    this.movesMadeThisTime = 0;
     this.shield = false;
-    this.superHeroClass = null;
+    this.superHeroClass = superHeroClass;
     this.selectedWeapon = this.superHeroDefaultWeapon;
     document.getElementById(this.playerState).style.backgroundColor = "green";
 
     this.resetMove = function(){
-        this.moveMadeThisTime = 0;
-    }
+        this.movesMadeThisTime = 0;
+    };
+
+    this.resetWeapons = function(){
+        this.knifeWeapon = false;
+        this.gunWeapon = false;
+        this.flameThrowerWeapon = false;
+        this.bombWeapon = false;
+    };
+
 
     this.showDamage = new function () {
         // this.health -= damage;
@@ -1194,6 +1279,7 @@ window.onload = function(){
     FixedValues.UP = 38;
     FixedValues.RIGHT = 39;
     FixedValues.DOWN = 40;
+    FixedValues.SHOOT_SUPER_HERO_WEAPON = 68;
     FixedValues.SHOOT = 70;
     FixedValues.SHIELD = 83;
     FixedValues.END_MOVE = 13;
@@ -1216,8 +1302,7 @@ function Weapon(name, damage, damageWhenShieldIsUp, range) {
     this.damage = damage;
     this.damageWhenShieldIsUp = damageWhenShieldIsUp;
     this.range = range;
-};
-
+}
 function gameOver(name){
     document.getElementById("message1").innerHTML = "Congratulations "+name+" , you have won the challenge...";
     document.getElementById("message2").innerHTML = "... but war does not have a winner.";
