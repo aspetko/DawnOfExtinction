@@ -22,5 +22,5 @@ A little wizzard, famous for his dead spells.
 ### Cara Loft
 A advanutres who can use her "Power Seduce Beam" to make everybody fall instantly in love with her.
 
-### Lord Tandump
+### Lord Dumpnat
 His greatest weapon among others is his "Alternative Truth Beam". Once you are hit by this, it is hard to fight back. Your vision is blured, your motivation gone. 
