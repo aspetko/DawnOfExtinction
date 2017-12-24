@@ -450,7 +450,7 @@ function Board() {
                 enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
                 break;
             default:
-                console.log("Error: there is no such weapon...: "+ newWeapon);
+                console.error("Error: there is no such weapon...: "+ change);
                 return;
         }
         // this.debugPlayer();
@@ -769,7 +769,7 @@ function Board() {
                     return false;
                 case FixedValues.WEAPON_BOMB:
                     this.clearField(x, y);
-                    this.drawBomb();
+                    this.drawBomb(x, y);
                     return false;
                 case FixedValues.PLAYER_1:
                 case FixedValues.PLAYER_2:
