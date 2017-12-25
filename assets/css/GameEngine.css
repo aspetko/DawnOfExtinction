@@ -2,7 +2,7 @@
     font-family: 'bloodynormal';
     src: url('../fonts/BLOODY-webfont.eot');
     src: url('../fonts/BLOODY-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/BLOODY-webfont.woff2') format('woff2'),
+    /*url('../fonts/BLOODY-webfont.woff2') format('woff2'),*/
     url('../fonts/BLOODY-webfont.woff') format('woff'),
     url('../fonts/BLOODY-webfont.ttf') format('truetype'),
     url('../fonts/BLOODY-webfont.svg#bloodynormal') format('svg');

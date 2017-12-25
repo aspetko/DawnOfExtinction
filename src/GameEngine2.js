@@ -13,6 +13,10 @@ var GameEngine = GameEngine || {};
  * Global constants for the game
  */
 var FixedValues = FixedValues || {};
+/**
+ * Statemachine for sounds
+ */
+var StatemachineSound = StatemachineSound || {};
 
 ////////////////////////////
 // Helper Methods
@@ -382,6 +386,30 @@ function Board() {
         }
         console.log(output);
         console.groupEnd();
+
+        let foundPlayer1 = false;
+        let foundPlayer2 = false;
+        for (let y=0; y<GameEngine.numberOfRows; y++){
+            output += y+"[";
+            for (let x=0; x<GameEngine.numberOfColumns; x++){
+                if (this.fields[x][y] == 1){
+                    if (foundPlayer1){
+                        console.error("More than one player 1 is present");
+                    } else {
+                        foundPlayer1 = true;
+                    }
+                }
+                if (this.fields[x][y] == 2){
+                    if (foundPlayer2){
+                        console.error("More than one player 2 is present");
+                    } else {
+                        foundPlayer2 = true;
+                    }
+                }
+            }
+            output += "]\n";
+        }
+
     };
 
     this.resetBoard = function(){
@@ -450,7 +478,7 @@ function Board() {
                 enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
                 break;
             default:
-                console.error("Error: there is no such weapon...: "+ change);
+                console.error("Error: there is no such weapon...: ", change, x,y);
                 return;
         }
         // this.debugPlayer();
@@ -504,6 +532,7 @@ function Board() {
     this.drawKnife = function(x, y){
         this.context.beginPath();
         this.context.strokeStyle = FixedValues.COLOR_BLACK;
+        this.context.fillStyle = FixedValues.COLOR_BLACK;
         switch(GameEngine.factor){
             case 0:
                 this.context.fillRect(x * GameEngine.fieldWidth+17, y * GameEngine.fieldHeight+29, 6+(GameEngine.corrector/2), 13+(GameEngine.corrector/2));
@@ -567,6 +596,7 @@ function Board() {
     this.drawGun = function(x, y){
         this.context.beginPath();
         this.context.strokeStyle = FixedValues.COLOR_BLACK;
+        this.context.fillStyle = FixedValues.COLOR_BLACK;
         switch(GameEngine.factor){
             case 0:
                 this.context.fillRect(x*GameEngine.fieldWidth+10, y*GameEngine.fieldHeight+30, 10+(GameEngine.corrector/3), 21+(GameEngine.corrector/3));
@@ -679,7 +709,8 @@ function Board() {
         }
         this.context.stroke();
         this.context.beginPath();
-        this.context.strokeStyle = '#000000';
+        this.context.fillStyle = FixedValues.COLOR_BLACK;
+        this.context.strokeStyle = FixedValues.COLOR_BLACK;
         this.context.fillRect(x* GameEngine.fieldWidth+1+3, y*GameEngine.fieldHeight+6+9, 52, 13);
         this.context.fillRect(x* GameEngine.fieldWidth+1+3,  y*GameEngine.fieldHeight+6+22, 10, 20);
         this.context.fillRect(x* GameEngine.fieldWidth+1+22,  y*GameEngine.fieldHeight+6+22, 8, 19);
@@ -931,6 +962,82 @@ function Board() {
         this.context.lineTo(x2, y2);
     };
 
+    this.bounceSound = function(){
+        switch(FixedValues.rep){
+            case 0:
+                StatemachineSound.playWrong();
+                FixedValues.rep++;
+                break;
+            case 1:
+                StatemachineSound.playGun();
+                FixedValues.rep++;
+                break;
+            case 2:
+                StatemachineSound.playBoing();
+                FixedValues.rep++;
+                break;
+            case 3:
+                StatemachineSound.playBomb();
+                FixedValues.rep++;
+                break;
+            case 4:
+                StatemachineSound.playCaptainVolume();
+                FixedValues.rep++;
+                break;
+            case 5:
+                StatemachineSound.playFlameThrower();
+                FixedValues.rep++;
+                break;
+            case 6:
+                StatemachineSound.playHeartBeat();
+                FixedValues.rep++;
+                break;
+            case 7:
+                StatemachineSound.playKnifeStab();
+                FixedValues.rep++;
+                break;
+            case 8:
+                StatemachineSound.playLaser();
+                FixedValues.rep++;
+                break;
+            case 9:
+                StatemachineSound.playLoveMe();
+                FixedValues.rep++;
+                break;
+            case 10:
+                StatemachineSound.playLoveSpell();
+                FixedValues.rep++;
+                break;
+            case 11:
+                StatemachineSound.playMagicBeam();
+                FixedValues.rep++;
+                break;
+            case 12:
+                StatemachineSound.playWomanPassAway();
+                FixedValues.rep++;
+                break;
+            case 13:
+                StatemachineSound.playMenPassAway();
+                FixedValues.rep++;
+                break;
+            case 14:
+                StatemachineSound.playShieldBlocks();
+                FixedValues.rep++;
+                break;
+            case 15:
+                StatemachineSound.playStep();
+                FixedValues.rep++;
+                break;
+            default:
+                FixedValues.rep = 0;
+                break;
+        }
+        // if (GameEngine.currentPlayer.playerNr == 1){
+        // } else {
+        //     new Audio("../assets/sounds/Pflop.mp3").play();
+        // }
+    };
+
     this.movePlayerLeft = function(){
         let player = GameEngine.currentPlayer;
         if (player.pos_x == 0){ // leftmost column, continue on the right column ...
@@ -943,6 +1050,7 @@ function Board() {
                     this.movePlayerMatrix(player, newPos, player.pos_y);
                 } else {
                     console.log("Move not possible, field occupied");
+                    StatemachineSound.playBoing();
                 }
             }
         } else { // check if element left is accessible
@@ -951,6 +1059,7 @@ function Board() {
                 this.movePlayerMatrix(player, x, player.pos_y);
             } else {
                 console.log("Move not possible, field occupied");
+                StatemachineSound.playBoing();
             }
         }
 
@@ -968,6 +1077,7 @@ function Board() {
                     this.movePlayerMatrix(player, newPos, player.pos_y);
                 } else {
                     console.log("Move not possible, field occupied");
+                    StatemachineSound.playBoing();
                 }
             }
         } else { // check if element right is not a barrier
@@ -976,6 +1086,7 @@ function Board() {
                 this.movePlayerMatrix(player, x, player.pos_y);
             } else {
                 console.log("Move not possible, field occupied");
+                StatemachineSound.playBoing();
             }
         }
     };
@@ -993,6 +1104,7 @@ function Board() {
                     this.movePlayerMatrix(player, player.pos_x, player.pos_y-1);
                 } else {
                     console.log("Move not possible, field occupied");
+                    StatemachineSound.playBoing();
                 }
             }
         } else { // check if element above is not a barrier
@@ -1001,6 +1113,7 @@ function Board() {
                 this.movePlayerMatrix(player, player.pos_x, y);
             } else {
                 console.log("Move not possible, field occupied");
+                StatemachineSound.playBoing();
             }
         }
     };
@@ -1018,6 +1131,7 @@ function Board() {
                     this.movePlayerMatrix(player, player.pos_x, player.pos_y+1);
                 } else {
                     console.log("Move not possible, field occupied");
+                    StatemachineSound.playBoing();
                 }
             }
         } else { // check if element below is not a barrier
@@ -1026,12 +1140,14 @@ function Board() {
                 this.movePlayerMatrix(player, player.pos_x, y);
             } else {
                 console.log("Move not possible, field occupied");
+                StatemachineSound.playBoing();
             }
         }
     };
 
     this.fire = function () {
         GameEngine.moveMade();
+        this.bounceSound();
         console.log("Fire called");
     };
 
@@ -1316,6 +1432,115 @@ window.onload = function(){
     GameEngine.CaraLoft = new Weapon("Power Seduce Beam", 70, 25, 5);
     GameEngine.AlternativeTruthBeam = new Weapon("Alternative Truth Beam", 70, 25, 5);
 
+    FixedValues.rep = 0;
+
+};
+
+StatemachineSound.playWrong = function(){
+    new Audio("../assets/sounds/WRONG.wav").play();
+};
+
+StatemachineSound.playGun  = function(){
+    new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3").play();
+};
+
+StatemachineSound.playBoing = function(){
+    if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
+        console.error("CV");
+        new Audio("../assets/sounds/Boing.mp3").play();
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
+        new Audio("../assets/sounds/Boing.mp3").play();
+        console.error("PH")
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
+        new Audio("../assets/sounds/Pflop.mp3").play();
+        console.error("CL");
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
+        new Audio("../assets/sounds/Boing.mp3").play();
+        console.error("LD");
+    } else {
+        console.error("None");
+    }
+
+};
+StatemachineSound.playStep  = function(){
+    new Audio("../assets/sounds/Step.mp3").play();
+};
+
+StatemachineSound.playBomb  = function(){
+    new Audio("../assets/sounds/Bomb.wav").play();
+};
+
+StatemachineSound.playCaptainVolume  = function(){
+    new Audio("../assets/sounds/CaptainVolume.wav").play();
+};
+
+StatemachineSound.playFlameThrower  = function(){
+    new Audio("../assets/sounds/FlameThrower.wav").play();
+};
+
+StatemachineSound.playHeartBeat  = function(){
+    new Audio("../assets/sounds/HeartBeat.mp3").play();
+};
+
+StatemachineSound.playKnifeStab  = function(){
+    new Audio("../assets/sounds/KnifeStab.wav").play();
+};
+
+StatemachineSound.playLaser = function(){
+    new Audio("../assets/sounds/Laser.mp3").play();
+};
+
+StatemachineSound.playLoveMe = function(){
+    new Audio("../assets/sounds/LoveMe.mp3").play();
+};
+
+StatemachineSound.playLoveSpell = function(){
+    new Audio("../assets/sounds/LoveSpell.mp3").play();
+};
+
+StatemachineSound.playShieldBlocks = function(){
+    new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+};
+
+StatemachineSound.playMagicBeam = function(){
+    new Audio("../assets/sounds/MagicBeam.mp3").play();
+};
+
+
+StatemachineSound.playPassAway  = function(){
+    if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
+        this.playMenPassAway();
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
+        this.playMenPassAway();
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
+        this.WomanPassAway();
+    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
+        this.playMenPassAway();
+    }
+};
+
+StatemachineSound.playWomanPassAway  = function(){
+    let first = new Audio("../assets/sounds/WomanDiing.mp3")
+    first.play();
+    first.onended = function() {
+        let second = new Audio("../assets/sounds/NowYouAreDead.mp3")
+        second.play();
+        second.onended = function () {
+            new Audio("../assets/sounds/GameOver.mp3").play();
+        };
+    };
+};
+
+StatemachineSound.playMenPassAway  = function(){
+    let first = new Audio("../assets/sounds/ManDieing.mp3");
+    first.play();
+    first.onended = function() {
+        let second = new Audio("../assets/sounds/NowYouAreDead.mp3")
+        second.play();
+        second.onended = function () {
+            new Audio("../assets/sounds/GameOver.mp3").play();
+        };
+    };
 };
 
 function Weapon(name, damage, damageWhenShieldIsUp, range) {
