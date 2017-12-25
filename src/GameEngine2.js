@@ -38,12 +38,27 @@ function enableWeaponsAndItems(id){
 ///////////////////////////
 // Game Control
 ///////////////////////////
+GameEngine.newGame = function () {
+    // console.log(GameEngine.gameRunning)
+    if (GameEngine.gameRunning) {
+        // console.log("GameEngine.gameRunning true")
+        $('#GameConfirmModal').modal('show');
+    } else {
+        this.newGameCall();
+    }
+};
+
+GameEngine.restartGame = function () {
+    // console.log("GameEngine.gameRunning overwrite")
+    this.newGameCall();
+};
 
 /**
  * Read the game, player and other settings
  */
-GameEngine.newGame = function () {
-
+GameEngine.newGameCall = function () {
+    $("#Current1").css(FixedValues.COLOR, FixedValues.COLOR_RED_LABEL);
+    GameEngine.gameRunning = true;
     // Set up the players
     let pName1= $("#player1Name").val();
     let pName2= $("#player2Name").val();
@@ -688,45 +703,22 @@ function Board() {
     };
 
     this.drawFlameThrower = function(x, y){
-        // this.context.strokeStyle = 'red';
-        let correct_x = 0, correct_y = 0;
-        switch(GameEngine.factor){
-            case 0: break;
-            case 1: break;
-            case 2:
-                correct_x = 8;
-                correct_y = 10;
-                break;
-            case 3:
-                correct_x = 10;
-                correct_y = 10;
-                break;
-            case 4:
-                correct_x = 18;
-                correct_y = 18;
-                break;
-            case 5:
-                correct_x = 28;
-                correct_y = 28;
-                break;
-        }
-        this.context.stroke();
         this.context.beginPath();
         this.context.fillStyle = FixedValues.COLOR_BLACK;
         this.context.strokeStyle = FixedValues.COLOR_BLACK;
-        this.context.fillRect(x* GameEngine.fieldWidth+1+3, y*GameEngine.fieldHeight+6+9, 52, 13);
-        this.context.fillRect(x* GameEngine.fieldWidth+1+3,  y*GameEngine.fieldHeight+6+22, 10, 20);
-        this.context.fillRect(x* GameEngine.fieldWidth+1+22,  y*GameEngine.fieldHeight+6+22, 8, 19);
-        this.context.ellipse(x* GameEngine.fieldWidth+40, y*GameEngine.fieldHeight+35+0, 3, 7, 180 * Math.PI/180, 0, 2 * Math.PI);
+        this.context.fillRect(x* GameEngine.fieldWidth+4, y*GameEngine.fieldHeight+15, 52+(GameEngine.factor*6), 13+(GameEngine.factor*4));
+        this.context.fillRect(x* GameEngine.fieldWidth+4,  y*GameEngine.fieldHeight+28+(GameEngine.factor*4), 10+(GameEngine.factor*2), 20+(GameEngine.factor*2)); // links
+        this.context.fillRect(x* GameEngine.fieldWidth+23+(GameEngine.factor*2),  y*GameEngine.fieldHeight+28+(GameEngine.factor*4), 8+(GameEngine.factor*2), 20+(GameEngine.factor*2)); // rechts
+        this.context.ellipse(x* GameEngine.fieldWidth+40+(GameEngine.factor*6), y*GameEngine.fieldHeight+35+(GameEngine.factor*6), 3+(GameEngine.factor*2), 7+(GameEngine.factor*2), 180 * Math.PI/180, 0, 2 * Math.PI);
         this.context.fill();
         this.context.stroke();
-        this.context.moveTo(x* GameEngine.fieldWidth+1+13,  y*GameEngine.fieldHeight+6+30);
-        this.context.lineTo(x* GameEngine.fieldWidth+1+22,  y*GameEngine.fieldHeight+6+30);
+        this.context.moveTo(x* GameEngine.fieldWidth+14+(GameEngine.factor*2),  y*GameEngine.fieldHeight+36+(GameEngine.factor*4)); // Handschutz
+        this.context.lineTo(x* GameEngine.fieldWidth+23+(GameEngine.factor*2),  y*GameEngine.fieldHeight+36+(GameEngine.factor*4));
         this.context.stroke();
-        this.context.moveTo(x* GameEngine.fieldWidth+1+16,  y*GameEngine.fieldHeight+6+22);
-        this.context.lineTo(x* GameEngine.fieldWidth+1+16,  y*GameEngine.fieldHeight+6+26);
+        this.context.moveTo(x* GameEngine.fieldWidth+17+(GameEngine.factor*2),  y*GameEngine.fieldHeight+28+(GameEngine.factor*4)); // Trigger
+        this.context.lineTo(x* GameEngine.fieldWidth+17+(GameEngine.factor*2),  y*GameEngine.fieldHeight+32+(GameEngine.factor*4));
         this.context.stroke();
-        this.context.strokeRect(x* GameEngine.fieldWidth+1+52,  y*GameEngine.fieldHeight+6+12, 6, 2);
+        this.context.strokeRect(x* GameEngine.fieldWidth+(GameEngine.factor*6)+53,  y*GameEngine.fieldHeight+(GameEngine.factor*2)+18, 6, 2);
         this.context.closePath();
     };
 

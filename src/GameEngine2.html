@@ -268,7 +268,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="GameOverModal" role="dialog">
     <div class="modal-dialog">
 
@@ -295,6 +294,36 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="GameConfirmModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dawn of Extinction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container col-md-12">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <img  src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
+                        </div>
+                        <div class="col-md-5">
+                            <p>A game is already running. Are you sure you want to start a new one?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" onclick="GameEngine.restartGame()" data-dismiss="modal">Yes</button>
             </div>
         </div>
     </div>
