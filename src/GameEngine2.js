@@ -174,7 +174,8 @@ GameEngine.newGameCall = function () {
                 }
                 break;
             case FixedValues.LEFT:
-                GameEngine.Board.debug();
+                // GameEngine.Board.debug();
+                console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
                 GameEngine.Board.movePlayerLeft();
                 break;
             case FixedValues.SHOOT:
@@ -193,16 +194,19 @@ GameEngine.newGameCall = function () {
                 }
                 break;
             case FixedValues.UP:
+                console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
                 GameEngine.Board.movePlayerUp();
-                GameEngine.Board.debug();
+                // GameEngine.Board.debug();
                 break;
             case FixedValues.RIGHT:
+                console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
                 GameEngine.Board.movePlayerRight();
-                GameEngine.Board.debug();
+                // GameEngine.Board.debug();
                 break;
             case FixedValues.DOWN:
                 GameEngine.Board.movePlayerDown();
-                GameEngine.Board.debug();
+                // GameEngine.Board.debug();
+                console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
                 break;
             case FixedValues.CHANGE_WEAPON:
                 GameEngine.Board.changeWeapon();
@@ -265,6 +269,7 @@ function showResult(){
  */
 function Board() {
     this.bounceOfThePlayer = document.getElementById('bouncePlayer').checked;
+    console.error(this.bounceOfThePlayer);
     this.bounceOfTheWeapon = document.getElementById('bounceWeapon').checked;
     let board = document.getElementById(FixedValues.BOARD_ID);
     this.context = board.getContext("2d");
@@ -321,6 +326,9 @@ function Board() {
         }
     }
 
+    /**
+     * Create an empty field to position the elements of the game.
+     */
     this.drawEmptyChessField = function() {
         this.context.clearRect(0, 0, 600, 600);
         this.context.fillStyle =  FixedValues.COLOR_BLACK;
@@ -341,6 +349,10 @@ function Board() {
         this.context.closePath();
     };
 
+    /**
+     * Place the elements on the field
+     * @param element the element to position
+     */
     this.positionElementsByRandom = function(element) {
         let done = false;
 
@@ -383,6 +395,9 @@ function Board() {
         }
     };
 
+    /**
+     * Helper to analyse the board
+     */
     this.debug = function() {
         console.group("Board:");
         let output = "   ";
@@ -428,6 +443,9 @@ function Board() {
 
     };
 
+    /**
+     * Reset the state of the board
+     */
     this.resetBoard = function(){
 //        console.log("resetBoard called");
         for (let y=0; y < GameEngine.numberOfColumns; y++){
@@ -445,13 +463,37 @@ function Board() {
      * @param y the y - coordinate
      */
     this.pickUpWeapon = function(x,y){
+        if (x<0 && !GameEngine.Board.bounceOfThePlayer){
+            x = GameEngine.numberOfColumns - 1;
+        } else {
+            return;
+        }
+
+        if (x>=GameEngine.numberOfColumns && !GameEngine.Board.bounceOfThePlayer){
+            x = 0;
+        } else {
+            return;
+        }
+
+        if (y<0 && !GameEngine.Board.bounceOfThePlayer ){
+            y = GameEngine.numberOfRows - 1;
+        } else {
+            return;
+        }
+
+        if (y>=GameEngine.numberOfRows && !GameEngine.Board.bounceOfThePlayer) {
+            y = 0;
+        } else {
+            return;
+        }
+
         let change = GameEngine.Board.fields[x][y];
         if (change === FixedValues.EMPTY_FIELD){
             return; // Nothing to do
         }
 
         let nr = GameEngine.currentPlayer.playerNr;
-        console.log("Weapon found(x,y)-> ("+x+", "+y+")");
+        console.log("Weapon found(x,y)-> ("+x+", "+y+"): "+change);
         // remember the old weapon, to disable it in the view
         let oldWeapon = "";
         if (GameEngine.currentPlayer.knifeWeapon) {
@@ -722,18 +764,41 @@ function Board() {
         this.context.closePath();
     };
 
-    this.drawMoveIfPossible = function(x, y){
+    this.drawMoveIfPossible = function(x, y, direction){
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
-            if (GameEngine.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
-                console.log("bounceOfThePlayer "+this.bounceOfThePlayer);
+            if (GameEngine.Board.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
+                console.log("bounceOfThePlayer "+GameEngine.Board.bounceOfThePlayer);
                 return true; // Move not possible
             } else{
-                console.log("Implement me: bounceOfThePlayer");
-                // TODO: Implement me: bounceOfThePlayer
-                return true;
+                let temp_x = -1;
+                let temp_y = -1;
+                switch(direction){
+                    case 1:
+                        console.log("inside this.drawMoveIfPossible(x, y) x axis - left of figure", x, y);
+                        temp_x = GameEngine.numberOfColumns-1;
+                        return this.checkfield(temp_x, y);
+                    case 2:
+                        console.log("inside this.drawMoveIfPossible(x, y) x axis - right of figure", x, y);
+                        temp_x = 0;
+                        return this.checkfield(temp_x, y);
+                    case 3:
+                        console.log("inside this.drawMoveIfPossible(x, y) y axis -  above of figure", x, y);
+                        temp_y = GameEngine.numberOfRows-1;
+                        return this.checkfield(x, temp_y);
+                    case 4:
+                        console.log("inside this.drawMoveIfPossible(x, y) y axis - below of figure", x, y);
+                        temp_y = 0;
+                        return this.checkfield(x, temp_y);
+                }
+                return false;
             }
         }
-        // console.log("inside this.drawMoveIfPossible(x, y)", x, y);
+
+        return this.checkfield(x, y);
+    };
+
+    this.checkfield = function(x, y){
+        // console.log("inside checkfield(x, y)", x, y);
         switch (this.fields[x][y]) {
             case FixedValues.EMPTY_FIELD:
             case FixedValues.WEAPON_KNIFE:
@@ -749,6 +814,7 @@ function Board() {
                 // console.log("WTF (x,y) ", x, y, this.fields[x][y]);
                 return true;
         }
+
     };
 
     this.clearField = function(x, y){
@@ -763,12 +829,10 @@ function Board() {
         // this.drawEmptyChessFieldPossible(x, y);
     };
 
-
-
-    this.unDrawMoveIfPossible = function(x, y){
+    this.unDrawMoveIfPossible = function(x, y, direction){
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
-            if (GameEngine.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
-                console.log("bounceOfThePlayer "+this.bounceOfThePlayer);
+            if (GameEngine.Board.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
+                console.log("bounceOfThePlayer "+GameEngine.Board.bounceOfThePlayer);
                 return true; // Move not possible
             } else{
                 console.log("Implement me: bounceOfThePlayer");
@@ -811,14 +875,14 @@ function Board() {
         // x axis - left of figure
         let count;
         for (count = 1; count <=stepsToDo; count++){
-            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y, 1);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
         // x axis - right of figure
         for (count = 1; count <= stepsToDo ; count++){
-            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y, 2);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -826,7 +890,7 @@ function Board() {
 
         // y axis -  above of figure
         for (count = 1; count <= stepsToDo ; count++){
-            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count, 3);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -834,7 +898,7 @@ function Board() {
 
         // y axis - below of figure
         for (count =1; count <= stepsToDo ; count++){
-            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
+            let stop = this.drawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count, 4);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -848,14 +912,14 @@ function Board() {
         // x axis - left of figure
         let count;
         for (count = 1; count <=stepsToDo; count++){
-            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y);
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x - count, GameEngine.currentPlayer.pos_y, 1);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
         }
         // x axis - right of figure
         for (count = 1; count <=stepsToDo; count++){
-            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y);
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y, 2);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -863,7 +927,7 @@ function Board() {
 
         // y axis -  above of figure
         for (count = 1; count <=stepsToDo; count++){
-            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count);
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y-count, 3);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -871,7 +935,7 @@ function Board() {
 
         // y axis - below of figure
         for (count = 1; count <=stepsToDo; count++){
-            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count);
+            let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y+count, 4);
             if (stop) {
                 count = Number(GameEngine.numberOfMoves) + 5;
             }
@@ -1037,8 +1101,9 @@ function Board() {
         let player = GameEngine.currentPlayer;
         if (player.pos_x == 0){ // leftmost column, continue on the right column ...
             console.log("leftmost column, continue on the right column ...");
-            if (GameEngine.bounceOfThePlayer){
+            if (GameEngine.Board.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
+                StatemachineSound.playBoing();
             } else {
                 let newPos = GameEngine.numberOfColumns-1;
                 if (this.canMove(newPos, player.pos_y)){
@@ -1064,8 +1129,9 @@ function Board() {
         let player = GameEngine.currentPlayer;
         if (player.pos_x == GameEngine.numberOfColumns-1){ // rightmost column, continue on the left ...
             console.log("rightmost column, continue on the right column ...");
-            if (GameEngine.bounceOfThePlayer){
+            if (GameEngine.Board.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
+                StatemachineSound.playBoing();
             } else {
                 let newPos = 0;
                 if (this.canMove(newPos, player.pos_y)){
@@ -1091,7 +1157,8 @@ function Board() {
         // this.debugPlayer(player);
         if (player.pos_y == 0){ // topmost row, continue on the lowest row ...
             console.log("topmost row, continue on the lowest row ...");
-            if (GameEngine.bounceOfThePlayer){
+            StatemachineSound.playBoing();
+            if (GameEngine.Board.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
             } else {
                 let newPos = GameEngine.numberOfRows-1;
@@ -1118,8 +1185,9 @@ function Board() {
         // this.debugPlayer(player);
         if (player.pos_y == GameEngine.numberOfRows-1){ // lowest row, continue on the topmost row ...
             console.log("lowest row, continue on the topmost row ...");
-            if (this.bounceOfThePlayer){
+            if (GameEngine.Board.bounceOfThePlayer){
                 console.log("bounceOfThePlayer: no move possible");
+                StatemachineSound.playBoing();
             } else {
                 let newPos = 0;
                 if (this.canMove(player.pos_x, newPos)){
@@ -1432,119 +1500,13 @@ window.onload = function(){
 
 };
 
-StatemachineSound.playWrong = function(){
-    new Audio("../assets/sounds/WRONG.wav").play();
-};
-
-StatemachineSound.playGun  = function(){
-    new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3").play();
-};
-
-StatemachineSound.playBoing = function(){
-    if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
-        console.error("CV");
-        new Audio("../assets/sounds/Boing.mp3").play();
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
-        new Audio("../assets/sounds/Boing.mp3").play();
-        console.error("PH")
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
-        new Audio("../assets/sounds/Pflop.mp3").play();
-        console.error("CL");
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
-        new Audio("../assets/sounds/Boing.mp3").play();
-        console.error("LD");
-    } else {
-        console.error("None");
-    }
-
-};
-StatemachineSound.playStep  = function(){
-    new Audio("../assets/sounds/Step.mp3").play();
-};
-
-StatemachineSound.playBomb  = function(){
-    new Audio("../assets/sounds/Bomb.wav").play();
-};
-
-StatemachineSound.playCaptainVolume  = function(){
-    new Audio("../assets/sounds/CaptainVolume.wav").play();
-};
-
-StatemachineSound.playFlameThrower  = function(){
-    new Audio("../assets/sounds/FlameThrower.wav").play();
-};
-
-StatemachineSound.playHeartBeat  = function(){
-    new Audio("../assets/sounds/HeartBeat.mp3").play();
-};
-
-StatemachineSound.playKnifeStab  = function(){
-    new Audio("../assets/sounds/KnifeStab.wav").play();
-};
-
-StatemachineSound.playLaser = function(){
-    new Audio("../assets/sounds/Laser.mp3").play();
-};
-
-StatemachineSound.playLoveMe = function(){
-    new Audio("../assets/sounds/LoveMe.mp3").play();
-};
-
-StatemachineSound.playLoveSpell = function(){
-    new Audio("../assets/sounds/LoveSpell.mp3").play();
-};
-
-StatemachineSound.playShieldBlocks = function(){
-    new Audio("../assets/sounds/ShieldBlocks.mp3").play();
-};
-
-StatemachineSound.playMagicBeam = function(){
-    new Audio("../assets/sounds/MagicBeam.mp3").play();
-};
-
-
-StatemachineSound.playPassAway  = function(){
-    if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
-        this.playMenPassAway();
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
-        this.playMenPassAway();
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
-        this.WomanPassAway();
-    } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
-        this.playMenPassAway();
-    }
-};
-
-StatemachineSound.playWomanPassAway  = function(){
-    let first = new Audio("../assets/sounds/WomanDiing.mp3")
-    first.play();
-    first.onended = function() {
-        let second = new Audio("../assets/sounds/NowYouAreDead.mp3")
-        second.play();
-        second.onended = function () {
-            new Audio("../assets/sounds/GameOver.mp3").play();
-        };
-    };
-};
-
-StatemachineSound.playMenPassAway  = function(){
-    let first = new Audio("../assets/sounds/ManDieing.mp3");
-    first.play();
-    first.onended = function() {
-        let second = new Audio("../assets/sounds/NowYouAreDead.mp3")
-        second.play();
-        second.onended = function () {
-            new Audio("../assets/sounds/GameOver.mp3").play();
-        };
-    };
-};
-
 function Weapon(name, damage, damageWhenShieldIsUp, range) {
     this.name = name;
     this.damage = damage;
     this.damageWhenShieldIsUp = damageWhenShieldIsUp;
     this.range = range;
 }
+
 function gameOver(name){
     document.getElementById("message1").innerHTML = "Congratulations "+name+" , you have won the challenge...";
     document.getElementById("message2").innerHTML = "... but war does not have a winner.";

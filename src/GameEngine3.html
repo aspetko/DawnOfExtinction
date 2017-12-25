@@ -1,1 +1,334 @@
-Not yet buddy...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dawn of Extinction</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../assets/js/jquery-3.2.1.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="StatemachineSound.js"></script>
+    <script src="GameEngine2.js"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser-polyfill.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/GameEngine.css" type="text/css" charset="utf-8"/>
+</head>
+<body style="height: 769px">
+<div>
+    <h1>Dawn of Extinction</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="row">
+                <div class="col-sm-2"><img alt="Cambodia Child Soilder" src="../assets/img/Cambodia.Body1_.jpg" style="min-width: 160px; max-width: 160px"></div>
+            </div>
+            <div class="row">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <fieldset>
+                <div class="row">
+                    <legend>Player 1:</legend>
+                    <div class="col-sm-4">
+                        <label id="Current1" for="currentPlayerName">Current:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul>
+                        <li id="superHeroDefaultWeapon"></li>
+                        <li id="knifeWeapon">Knife</li>
+                        <li id="gunWeapon">Gun</li>
+                        <li id="flameThrowerWeapon">Flamethrower</li>
+                        <li id="bombWeapon">Bomb</li>
+                        <li id="shield">Shield</li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 right"><img id="player1" alt="player 1" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 right" id="currentPlayerName"></div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-8">
+            <canvas id="board" width="600px" height="600px" style="border: 1px solid black; margin-left: 80px"/>
+        </div>
+        <div class="col-sm-2">
+            <div class="row">
+                <div class="col-sm-2"><img alt="Soilders" src="../assets/img/Golang Bootcamp (HQ).jpg" style="min-width: 160px; max-width: 160px"></div>
+            </div>
+            <div class="row">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <fieldset>
+                <div class="row">
+                    <legend>Player 2:</legend>
+                    <div class="col-sm-4">
+                        <label id="Current2" for="currentPlayerName2">Current:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul>
+                        <li id="superHeroDefaultWeapon2"></li>
+                        <li id="knifeWeapon2">Knife</li>
+                        <li id="gunWeapon2">Gun</li>
+                        <li id="flameThrowerWeapon2">Flamethrower</li>
+                        <li id="bombWeapon2">Bomb</li>
+                        <li id="shield2">Shield</li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 right"><img id="player2" alt="player 2" width="80" src="../assets/img/vitruvian-man-black-silhouette.svg"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 right" id="currentPlayerName2"></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-7">
+        <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal" data-target="#newGameModal">New Game</button>
+    </div>
+</div>
+<div class="modal modal-wide fade" id="newGameModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dawn of Extinction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="splashImageNewGame" src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
+                        Only two humans survived the World War III...<br>
+                        ... but as long as there is more then one, there won't be peace!<br>
+                    </div>
+                    <div class="col-md-8">
+                        <fieldset>
+                            <legend>Board:</legend>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="col-sm-4">
+                                        <label for="dimension">Dimension:</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <select id="dimension">
+                                            <option>5*5</option>
+                                            <option>6*6</option>
+                                            <option>7*7</option>
+                                            <option>8*8</option>
+                                            <option>9*9</option>
+                                            <option selected>10*10</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="col-sm-4">
+                                        <label for="obstacles">Obstacles:</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="number" min="4" value="10" max="10" id="obstacles">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="col-sm-4">
+                                        <label for="bouncePlayer">Bounce Players:</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" id="bouncePlayer" checked>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="col-sm-4">
+                                        <label for="bounceWeapon">Bounce Weapons:</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" id="bounceWeapon" checked>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="col-sm-4">
+                                        <label for="obstacles">Number of moves:</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="number" id="numberOfMoves" min="1" max="3" value="3">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="row">
+                            <fieldset>
+                                <legend>Player 1:</legend>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="player1Name" class="floatingPlayer">Name:</label>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="player1Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class=class="row">
+                                        <div class="col-sm-4">
+                                            <label>Superhero Class:</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class=class="row">
+                                                <input type="radio" name="superhero" id="CV1" checked> Captain Volume
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="PH1" name="superhero"> Parry Hotter
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="CL1" name="superhero"> Cara Loft
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="LT1" name="superhero"> Lord Tandump
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="row">
+                            <fieldset>
+                                <legend>Player 2:</legend>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="player2Name" class="floatingPlayer">Name:</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" id="player2Name">
+                                        </div>
+                                    </div>
+                                    <div class=class="row">
+                                        <div class="col-sm-4">
+                                            <label>Superhero Class:</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class=class="row">
+                                                <input type="radio" id="CV2" name="superhero2" checked> Captain Volume
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="PH2" name="superhero2"> Parry Hotter
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="CL2" name="superhero2"> Cara Loft
+                                            </div>
+                                            <div class=class="row">
+                                                <input type="radio" id="LT2" name="superhero2"> Lord Tandump
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GameEngine.newGame()" id="newGameButton">Start</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="GameOverModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dawn of Extinction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container col-md-12">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <img  src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
+                        </div>
+                        <div class="col-md-5">
+                            <p id="message1"></p>
+                            <p id="message2"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="GameConfirmModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dawn of Extinction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container col-md-12">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <img  src="../assets/img/travis-grossen-455623.jpg" width="300px"><br>
+                        </div>
+                        <div class="col-md-5">
+                            <p>A game is already running. Are you sure you want to start a new one?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" onclick="GameEngine.restartGame()" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
