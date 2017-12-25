@@ -1159,6 +1159,7 @@ function Board() {
     this.movePlayerMatrix = function(player, newX, newY){
         this.unShowPossibleMoves(player, newX, newY);
         this.redraw(player.pos_x, player.pos_y, player.playerNr, newX, newY);
+        StatemachineSound.playStep();
         // console.log("Before: ("+player.pos_x+", "+player.pos_y+")->("+newX+", "+newY+")");
         //GameEngine.Board.debug();
         // this.fields[player.pos_x][player.pos_y] = 0;

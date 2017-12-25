@@ -2,16 +2,15 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 /////////////////////////////
 // TODO:
 ////////////////////////////
-// - When entering a field with a weapon, pick it up and if a different weapon is present put it down
+// - if a different weapon is present in a field exchange the weapon
 // - Implement Bounce of the border
-// - new game -> resign game button
+// - new game -> resign game button?
 // - Bug reset board not working correct
-// - draw all resolutions Flamethrower
 
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - BUG: Bomb disapears when walking next to them without touching
+// - draw all resolutions Flamethrower
 
 /////////////////////////////
 // Done
@@ -26,3 +25,6 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - BUG: Sometimes the player is not set correct on the board.
 // - Sometimes the colors are going mad
 // - draw a better Flamethrower
+// - Added a sound statemachine
+// - When entering a field with a weapon, pick it up
+// - BUG: Bomb disapears when walking next to them without touching
