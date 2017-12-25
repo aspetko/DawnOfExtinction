@@ -5,7 +5,6 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - if a different weapon is present in a field exchange the weapon
 // - Implement Bounce of the border
 // - new game -> resign game button?
-// - Bug reset board not working correct
 
 /////////////////////////////
 //  Work In Progress
@@ -28,3 +27,4 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - Added a sound statemachine
 // - When entering a field with a weapon, pick it up
 // - BUG: Bomb disapears when walking next to them without touching
+// - Bug reset board not working correct

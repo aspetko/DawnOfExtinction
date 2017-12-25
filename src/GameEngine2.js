@@ -307,6 +307,7 @@ function Board() {
     }
 
     this.drawEmptyChessField = function() {
+        this.context.clearRect(0, 0, 600, 600);
         this.context.fillStyle =  FixedValues.COLOR_BLACK;
         this.context.strokeStyle =  FixedValues.COLOR_BLACK;
         this.context.beginPath();
@@ -413,11 +414,13 @@ function Board() {
     };
 
     this.resetBoard = function(){
+//        console.log("resetBoard called");
         for (let y=0; y < GameEngine.numberOfColumns; y++){
             for (let x=0; x < GameEngine.numberOfRows; x++){
-                this.fields[x][y]=FixedValues.EMPTY_FIELD;
+                this.fields[x][y] = FixedValues.EMPTY_FIELD;
             }
         }
+//        this.debug();
     };
 
 
@@ -646,7 +649,7 @@ function Board() {
     };
 
     this.drawBomb = function(x, y){
-        console.log("drawBomb(x, y) called:", x, y);
+        // console.log("drawBomb(x, y) called:", x, y);
         this.context.fillStyle =  FixedValues.COLOR_BLACK;
         this.context.strokeStyle =  FixedValues.COLOR_BLACK;
         this.context.beginPath();
