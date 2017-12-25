@@ -2,13 +2,13 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 /////////////////////////////
 // TODO:
 ////////////////////////////
-// - Implement Bounce of the border
+// - if a different weapon is present in a field exchange the weapon
 
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - if a different weapon is present in a field exchange the weapon
- 
+// - Implement Bounce of the border
+
 /////////////////////////////
 // Done
 /////////////////////////////
