@@ -1,0 +1,18 @@
+Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
+/////////////////////////////
+// TODO:
+////////////////////////////
+// - Implement do not bounce of the border
+// - Enable/ Disable weapon in the repository is not working correct anymore
+// - Assign weapon to the fire and superhero fire action
+// - Figer out if player is in range, when weapon is fired
+// - cause demage when weapon is fired/ player is hit
+// - Check if player is still  alive.
+
+/////////////////////////////
+//  Work In Progress
+/////////////////////////////
+
+/////////////////////////////
+// Done
+/////////////////////////////
