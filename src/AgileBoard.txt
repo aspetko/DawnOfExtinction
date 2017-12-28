@@ -2,12 +2,12 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 /////////////////////////////
 // TODO:
 ////////////////////////////
-// - if a different weapon is present in a field exchange the weapon
+// - Implement do not bounce of the border
 
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - Implement Bounce of the border
+// - if a different weapon is present in a field exchange the weapon
 
 /////////////////////////////
 // Done
@@ -28,3 +28,4 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - Bug reset board not working correct
 // - new game -> resign game button?
 // - draw all resolutions Flamethrower
+// - Implement Bounce of the border

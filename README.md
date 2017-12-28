@@ -12,6 +12,16 @@ Dawn of Extinction Version 2.0 -- Step 2: Movements
 
 Dawn of Extinction Version 3.0 -- Step 3: Fight!
 
+## How to play
+Each player can move up to three times in a row. The move does not have to be in just one direction. The minimum is on move.
+In very rare situations it can happen, that the player cannot move at all. In this case press the new game Button to reshuffel.
+
+- Use the cursor keys to control the current player.
+- The enter key, ends the move
+- F fires 
+- S toggles the shield, i.e. it raises it, when it was lowered or the other way arround.
+- D fire the default weapon
+
 ## Roles
 ### Captain Volume
 A underestimated little fat guy. His only super power is his way to load voice, when he talks. His voice can destroy almost everything. His voice is also reffered to as Super Sonic Sound.
