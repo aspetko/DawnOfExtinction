@@ -7,7 +7,6 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - if a different weapon is present in a field exchange the weapon
 
 /////////////////////////////
 // Done
@@ -29,3 +28,4 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - new game -> resign game button?
 // - draw all resolutions Flamethrower
 // - Implement Bounce of the border
+// - if a different weapon is present in a field exchange the weapon

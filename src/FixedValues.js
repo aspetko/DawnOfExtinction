@@ -78,8 +78,8 @@ FixedValues.SHOOT_SUPER_HERO_WEAPON = 68;
 FixedValues.SHOOT = 70;
 FixedValues.SHIELD = 83;
 FixedValues.END_MOVE = 13;
-FixedValues.CHANGE_WEAPON = 67;
-
+FixedValues.DEBUG_PLAYER = 80;
+FixedValues.DEBUG_BOARD = 66;
 // Testing purpose only. Will be removed later
 FixedValues.rep = 0;
 
