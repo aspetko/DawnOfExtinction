@@ -64,6 +64,10 @@ GameEngine.newGame = function () {
     }
 };
 
+GameEngine.newGameAfterGameOver  = function () {
+    GameEngine.gameRunning = false;
+    this.newGameCall();
+};
 /**
  * Function called by the "Are you sure dialog"
  */
@@ -278,6 +282,13 @@ GameEngine.switchPlayer = function() {
     }
 };
 
+GameEngine.oppositePlayer = function() {
+    if (GameEngine.currentPlayer.playerNr === 1) {
+        return GameEngine.player2;
+    }
+    return GameEngine.player1;
+};
+
 /**
  * Increase number of moves made by the selected player.
  */
@@ -286,9 +297,6 @@ GameEngine.moveMade = function(){
     console.log(GameEngine.currentPlayer.movesMadeThisTime+" move(s) made");
 };
 
-function showResult(){
-    GameEngine.currentPlayer.showDamage();
-}
 
 /**
  * Game matrix
@@ -1321,14 +1329,111 @@ function Board() {
         }
     };
 
+    this.canHit = function(){
+        let withinPlayers = false;
+        let distanceBetweenPlayers = 0;
+        if (GameEngine.player1.pos_x == GameEngine.player2.pos_x){
+            for (var y = 0; y<GameEngine.numberOfRows; y++){
+                switch(this.fields[GameEngine.player1.pos_x][y]){
+                    case FixedValues.EMPTY_FIELD:
+                    case FixedValues.WEAPON_KNIFE:
+                    case FixedValues.WEAPON_GUN:
+                    case FixedValues.WEAPON_FLAME_THROWER:
+                    case FixedValues.WEAPON_BOMB:
+                        if (withinPlayers){
+                            distanceBetweenPlayers++;
+                        }
+                        break;
+                    case FixedValues.PLAYER_1:
+                        if (withinPlayers){
+                            console.log("D:", distanceBetweenPlayers);
+                            return true;
+                        } else {
+                            withinPlayers = true;
+                        }
+                        break;
+                    case FixedValues.PLAYER_2:
+                        if (withinPlayers){
+                            console.log("D:", distanceBetweenPlayers);
+                            return true;
+                        } else {
+                            withinPlayers = true;
+                        }
+                        break;
+                    case FixedValues.BARRIER:
+                        if (withinPlayers){
+                            return false;
+                        }
+                        break;
+                }
+            }
+        }
+        if (GameEngine.player1.pos_y == GameEngine.player2.pos_y){
+            for (var x = 0; x < GameEngine.numberOfColumns; x++){
+                switch(this.fields[x][GameEngine.player1.pos_y]){
+                    case FixedValues.EMPTY_FIELD:
+                    case FixedValues.WEAPON_KNIFE:
+                    case FixedValues.WEAPON_GUN:
+                    case FixedValues.WEAPON_FLAME_THROWER:
+                    case FixedValues.WEAPON_BOMB:
+                        if (withinPlayers){
+                            distanceBetweenPlayers++;
+                        }
+                        break;
+                    case FixedValues.PLAYER_1:
+                        if (withinPlayers){
+                            console.log("D:", distanceBetweenPlayers);
+                            return true;
+                        } else {
+                            withinPlayers = true;
+                        }
+                        break;
+                    case FixedValues.PLAYER_2:
+                        if (withinPlayers){
+                            console.log("D:", distanceBetweenPlayers);
+                            return true;
+                        } else {
+                            withinPlayers = true;
+                        }
+                        break;
+                    case FixedValues.BARRIER:
+                        if (withinPlayers){
+                            return false;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    };
+
+    // this.inRangeOfWeapon = function(withDefaultWeapon){
+    //     if (this.canHit()){
+    //         if (withDefaultWeapon){
+    //             console.log("withDefaultWeapon");
+    //         } else {
+    //             console.log("with other weapon");
+    //         }
+    //     } else {
+    //         return false;
+    //     }
+    // };
+
+
     /**
      * Fire a shot from the found weapon, if any.
      */
     this.fire = function () {
         let weapon = GameEngine.currentPlayer.getWeapon();
-        switch(GameEngine.currentPlayer.getWeapon()){
+        switch(weapon){
             case FixedValues.WEAPON_KNIFE:
                 GameEngine.moveMade();
+                if (this.canHit()){
+                    GameEngine.oppositePlayer().showDamage(10);
+                    console.log("can Hit")
+                } else {
+                    console.log("can't Hit")
+                }
                 console.log("Fire called with Knife");
                 StatemachineSound.playKnifeStab();
                 if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
@@ -1338,6 +1443,12 @@ function Board() {
                 break;
             case FixedValues.WEAPON_GUN:
                 GameEngine.moveMade();
+                if (this.canHit()){
+                    GameEngine.oppositePlayer().showDamage(10);
+                    console.log("can Hit")
+                } else {
+                    console.log("can't Hit")
+                }
                 console.log("Fire called with Gun");
                 StatemachineSound.playGun();
                 if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
@@ -1347,6 +1458,12 @@ function Board() {
                 break;
             case FixedValues.WEAPON_FLAME_THROWER:
                 GameEngine.moveMade();
+                if (this.canHit()){
+                    console.log("can Hit")
+                    GameEngine.oppositePlayer().showDamage(10);
+                } else {
+                    console.log("can't Hit")
+                }
                 console.log("Fire called with Flamethrower");
                 StatemachineSound.playFlameThrower();
                 if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
@@ -1356,6 +1473,12 @@ function Board() {
                 break;
             case FixedValues.WEAPON_BOMB:
                 GameEngine.moveMade();
+                if (this.canHit()){
+                    GameEngine.oppositePlayer().showDamage(10);
+                    console.log("can Hit")
+                } else {
+                    console.log("can't Hit")
+                }
                 console.log("Fire called with Bomb");
                 StatemachineSound.playBomb();
                 if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
@@ -1379,14 +1502,44 @@ function Board() {
         console.log("FireSuperHeroWeapon called");
         if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
             StatemachineSound.playCaptainVolume();
+            if (this.canHit()){
+                console.log("can Hit")
+                GameEngine.oppositePlayer().showDamage(10);
+            } else {
+                console.log("can't Hit")
+            }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
             StatemachineSound.playMagicBeam();
+            if (this.canHit()){
+                console.log("can Hit")
+                GameEngine.oppositePlayer().showDamage(10);
+            } else {
+                console.log("can't Hit")
+            }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
             StatemachineSound.playLoveMe();
+            if (this.canHit()){
+                GameEngine.oppositePlayer().showDamage(10);
+                console.log("can Hit")
+            } else {
+                console.log("can't Hit")
+            }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
             StatemachineSound.playWrong();
+            if (this.canHit()){
+                GameEngine.oppositePlayer().showDamage(10);
+                console.log("can Hit")
+            } else {
+                console.log("can't Hit")
+            }
         } else {
             console.error("None");
+            if (this.canHit()){
+                GameEngine.oppositePlayer().showDamage(10);
+                console.log("can Hit")
+            } else {
+                console.log("can't Hit")
+            }
         }
         if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
             this.unShowPossibleMoves();
@@ -1576,28 +1729,38 @@ function Player(name, playerState, playerNr, superHeroClass) {
     /**
      * Display the damage to the players.
      */
-    this.showDamage = new function () {
-        // this.health -= damage;
-        // let line = document.getElementById("tester").value; // TODO: exchange by real event
-        let line = 100;
-        switch (line) {
-            case '0':
-                this.health = 100;
+    this.showDamage = function(damage) {
+        this.health -= damage;
+        if (this.health <= 0) {
+            if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
+                StatemachineSound.playMenPassAway();
+            } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
+                StatemachineSound.playMenPassAway();
+            } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
+                StatemachineSound.playWomanPassAway();
+            } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
+                StatemachineSound.playMenPassAway();
+            }
+            document.getElementById("message1").innerHTML = "Congratulations "+GameEngine.currentPlayer.name+" , you have won the challenge...";
+            document.getElementById("message2").innerHTML = "... but war does not have a winner.";
+            $('#GameOverModal').modal('show');
+
+            console.error("Game Over");
+        }
+        switch(this.health) {
+            case 0:
+                console.log(this.health);
+                $("#" + this.playerState).css('background', 'red');
                 break;
-            case '100':
-                this.health = 0;
+            case 100:
+                console.log(this.health);
+                $("#" + this.playerState).css('background', 'green');
                 break;
             default:
-                this.health = 100 - line;
-        }
-
-        if (this.health === 100) {
-            $("#" + this.playerState).css('background', 'green');
-        } else if (this.health === '0') {
-            // console.log("0");
-            $("#" + this.playerState).css('background', 'red');
-        } else {
-            $("#" + this.playerState).css('background', 'linear-gradient(to bottom, red ' + this.health + '%, green 100%)');
+                console.log(this.health);
+                $("#" + this.playerState).css('background', 'linear-gradient(to bottom, red ' +
+                    (100 - this.health) + '%, green 100%)');
+                break;
         }
     };
 
@@ -1681,13 +1844,4 @@ function Weapon(name, damage, damageWhenShieldIsUp, range) {
     this.damage = damage;
     this.damageWhenShieldIsUp = damageWhenShieldIsUp;
     this.range = range;
-}
-
-/**
- * This function is called to display the game over message.
- * @param name the name of the winner.
- */
-function gameOver(name){
-    document.getElementById("message1").innerHTML = "Congratulations "+name+" , you have won the challenge...";
-    document.getElementById("message2").innerHTML = "... but war does not have a winner.";
 }
