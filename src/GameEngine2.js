@@ -539,72 +539,52 @@ function Board() {
         } else {
             console.log("pickUpWeapon(x,y): fields[x][y] === ", x, y, change);
             GameEngine.currentPlayer.exchangeWeapon(change);
+            this.handleWeapon(change);
+        }
+        // this.debugPlayer();
+    };
+
+    /**
+     * Assign the new Weapon
+     * @param change the weapon to assign.
+     */
+    this.handleWeapon = function(change){
+        switch(change){
+            case FixedValues.WEAPON_KNIFE:
+                enableWeaponsAndItems( GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
+                break;
+            case FixedValues.WEAPON_GUN:
+                enableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
+                break;
+            case FixedValues.WEAPON_FLAME_THROWER:
+                enableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
+                break;
+            case FixedValues.WEAPON_BOMB:
+                enableWeaponsAndItems( GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
+                break;
         }
 
-        // Assign the new Weapon
-        // switch(change){
-        //     case FixedValues.WEAPON_KNIFE:
-        //         console.error("Found: Knife");
-        //         if (oldWeapon == -1){
-        //             GameEngine.currentPlayer.knifeWeapon = true;
-        //             console.log("Old Weapon: none; Pick up weapon");
-        //         } else {
-        //             console.log("X -> Y; Exchange weapon");
-        //             GameEngine.currentPlayer.resetWeapons();
-        //             GameEngine.currentPlayer.knifeWeapon = true;
-        //             GameEngine.Board.fields[x][y] = oldWeapon;
-        //         }
-        //         enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
-        //         break;
-        //     case FixedValues.WEAPON_GUN:
-        //         console.error("Found: Gun");
-        //         if (oldWeapon == -1){
-        //             GameEngine.currentPlayer.gunWeapon = true;
-        //             console.log("Old Weapon: none");
-        //         } else {
-        //             console.log("X -> Y; Exchange weapon");
-        //             GameEngine.currentPlayer.resetWeapons();
-        //             GameEngine.currentPlayer.gunWeapon = true;
-        //             GameEngine.Board.fields[x][y] = oldWeapon;
-        //         }
-        //         enableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
-        //         break;
-        //     case FixedValues.WEAPON_FLAME_THROWER:
-        //         console.error("Found: Flamethrower");
-        //         if (oldWeapon == -1){
-        //             console.log("Old Weapon: none");
-        //             GameEngine.currentPlayer.flameThrowerWeapon = true;
-        //         } else {
-        //             console.log("X -> Y; Exchange weapon");
-        //             GameEngine.currentPlayer.resetWeapons();
-        //             GameEngine.currentPlayer.flameThrowerWeapon = true;
-        //             GameEngine.Board.fields[x][y] = oldWeapon;
-        //         }
-        //         enableWeaponsAndItems(nr == 1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
-        //         break;
-        //     case FixedValues.WEAPON_BOMB:
-        //         console.error("Found: Bomb");
-        //         if (oldWeapon == -1){
-        //             GameEngine.currentPlayer.bombWeapon = true;
-        //             console.log("Old Weapon: none");
-        //         } else {
-        //             console.log("X -> Y; Exchange weapon");
-        //             GameEngine.currentPlayer.resetWeapons();
-        //             GameEngine.currentPlayer.bombWeapon = true;
-        //             GameEngine.Board.fields[x][y] = oldWeapon;
-        //         }
-        //         enableWeaponsAndItems( nr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
-        //         break;
-        //     default:
-        //         if (oldWeapon == -1){
-        //             console.log("Old Weapon: none");
-        //         } else {
-        //             console.log("X -> Y; Exchange weapon");
-        //         }
-        //         console.error("Error: there is no such weapon...: ", change, x,y);
-        //         return;
-        // }
-        this.debugPlayer();
+    };
+
+    /**
+     * Assign the new Weapon
+     * @param change the weapon to assign.
+     */
+    this.unHandleWeapon = function(change){
+        switch(change){
+            case FixedValues.WEAPON_KNIFE:
+                disableWeaponsAndItems( GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_KNIFE_ID : FixedValues.WEAPON_KNIFE2_ID);
+                break;
+            case FixedValues.WEAPON_GUN:
+                disableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_GUN_ID : FixedValues.WEAPON_GUN2_ID);
+                break;
+            case FixedValues.WEAPON_FLAME_THROWER:
+                disableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_FLAME_THROWER_ID : FixedValues.WEAPON_FLAME_THROWER2_ID);
+                break;
+            case FixedValues.WEAPON_BOMB:
+                disableWeaponsAndItems( GameEngine.currentPlayer.playerNr == 1 ? FixedValues.WEAPON_BOMB_ID : FixedValues.WEAPON_BOMB2_ID);
+                break;
+        }
     };
 
     /**
@@ -816,6 +796,11 @@ function Board() {
         this.context.closePath();
     };
 
+    /**
+     * Draw a flamethrower to the board.
+     * @param x the x coordinate.
+     * @param y the y coordinate.
+     */
     this.drawFlameThrower = function(x, y){
         this.context.beginPath();
         this.context.fillStyle = FixedValues.COLOR_BLACK;
@@ -836,6 +821,13 @@ function Board() {
         this.context.closePath();
     };
 
+    /**
+     * Draw the player, if possible.
+     * @param x the x coordinate.
+     * @param y the y coordinate.
+     * @param direction the direction, where 1 is left, 2 is right, 3 is up and 4 is down.
+     * @returns {boolean}
+     */
     this.drawMoveIfPossible = function(x, y, direction){
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
             if (GameEngine.Board.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
@@ -869,6 +861,12 @@ function Board() {
         return this.checkfield(x, y);
     };
 
+    /**
+     * Check field for content.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @returns {boolean}
+     */
     this.checkfield = function(x, y){
         // console.log("inside checkfield(x, y)", x, y);
         switch (this.fields[x][y]) {
@@ -889,6 +887,11 @@ function Board() {
 
     };
 
+    /**
+     * Clear a field
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     this.clearField = function(x, y){
         this.context.clearRect(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight, GameEngine.fieldWidth, GameEngine.fieldHeight);
         this.context.beginPath();
@@ -901,6 +904,13 @@ function Board() {
         // this.drawEmptyChessFieldPossible(x, y);
     };
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param direction
+     * @returns {boolean}
+     */
     this.unDrawMoveIfPossible = function(x, y, direction){
         if (x<0 || y<0 || x>=GameEngine.numberOfColumns || y>=GameEngine.numberOfRows) {
             if (GameEngine.Board.bounceOfThePlayer) {// "bounceOfTheBorder: reduce possible steps"
@@ -914,32 +924,38 @@ function Board() {
         }
         // Clear the field
         switch (this.fields[x][y]) {
-                case FixedValues.EMPTY_FIELD:
-                    this.clearField(x, y);
-                    return false;
-                case FixedValues.WEAPON_KNIFE:
-                    this.clearField(x, y);
-                    this.drawKnife(x, y);
-                    return false;
-                case FixedValues.WEAPON_GUN:
-                    this.clearField(x, y);
-                    this.drawGun(x, y);
-                    return false;
-                case FixedValues.WEAPON_FLAME_THROWER:
-                    this.clearField(x, y);
-                    this.drawFlameThrower(x, y);
-                    return false;
-                case FixedValues.WEAPON_BOMB:
-                    this.clearField(x, y);
-                    this.drawBomb(x, y);
-                    return false;
-                case FixedValues.PLAYER_1:
-                case FixedValues.PLAYER_2:
-                case FixedValues.BARRIER:
-                    return true;
-            }
+            case FixedValues.EMPTY_FIELD:
+                this.clearField(x, y);
+                return false;
+            case FixedValues.WEAPON_KNIFE:
+                this.clearField(x, y);
+                this.drawKnife(x, y);
+                return false;
+            case FixedValues.WEAPON_GUN:
+                this.clearField(x, y);
+                this.drawGun(x, y);
+                return false;
+            case FixedValues.WEAPON_FLAME_THROWER:
+                this.clearField(x, y);
+                this.drawFlameThrower(x, y);
+                return false;
+            case FixedValues.WEAPON_BOMB:
+                this.clearField(x, y);
+                this.drawBomb(x, y);
+                return false;
+            case FixedValues.PLAYER_1:
+            case FixedValues.PLAYER_2:
+            case FixedValues.BARRIER:
+                return true;
+        }
     };
 
+    /**
+     * Set highliting of possible moves.
+     * @param player the player, who is up.
+     * @param newX the new field from where the moves should be marked
+     * @param newY the new field from where the moves should be marked
+     */
     this.showPossibleMoves = function(){
         // first calculate the steps left for this move
         let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
@@ -977,6 +993,12 @@ function Board() {
         }
     };
 
+    /**
+     * Remove highliting of possible moves.
+     * @param player the player, who is up.
+     * @param newX the new field from where the moves should be marked
+     * @param newY the new field from where the moves should be marked
+     */
     this.unShowPossibleMoves = function(player, newX, newY){
         // first calculate the steps left for this move
         let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
@@ -1014,85 +1036,100 @@ function Board() {
         }
     };
 
+    /**
+     * Draw empty fields.
+     * @param x where on the board is the empty fied.
+     * @param y where on the board is the empty fied.
+     */
     this.drawEmptyChessFieldPossible = function(x, y){
         // console.log("(",x, ", ", y, ")");
         switch(GameEngine.factor){
             case 0:
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                 x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+60, y * GameEngine.fieldHeight+posy,
-                                  x * GameEngine.fieldWidth+posx, y * GameEngine.fieldHeight+60);
+                        x * GameEngine.fieldWidth+posx, y * GameEngine.fieldHeight+60);
                 }
                 break;
             case 1:
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
 
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+65, y * GameEngine.fieldHeight+posy+5,
-                                  x * GameEngine.fieldWidth+posx+5, y * GameEngine.fieldHeight+65);
+                        x * GameEngine.fieldWidth+posx+5, y * GameEngine.fieldHeight+65);
                 }
                 break;
             case 2:
                 for (let posx = 0, posy = 0; posx <= 75; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+72, y * GameEngine.fieldHeight+posy+12,
-                                  x * GameEngine.fieldWidth+posx+12, y * GameEngine.fieldHeight+72);
+                        x * GameEngine.fieldWidth+posx+12, y * GameEngine.fieldHeight+72);
                 }
                 break;
             case 3:
                 for (let posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+84, y * GameEngine.fieldHeight+posy+24,
-                                  x * GameEngine.fieldWidth+posx+24, y * GameEngine.fieldHeight+84);
+                        x * GameEngine.fieldWidth+posx+24, y * GameEngine.fieldHeight+84);
                 }
                 break;
             case 4:
                 for (let posx = 0, posy = 0; posx <= 90; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 this.drawLine(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight,
-                              x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + 100);
+                    x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + 100);
                 this.drawLine(x * GameEngine.fieldWidth + 100, y * GameEngine.fieldHeight+15,
-                              x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 100);
+                    x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 100);
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+100, y * GameEngine.fieldHeight+posy+34,
-                                  x * GameEngine.fieldWidth+posx+34, y * GameEngine.fieldHeight+100);
+                        x * GameEngine.fieldWidth+posx+34, y * GameEngine.fieldHeight+100);
                 }
                 break;
             case 5:
                 for (let posx = 0, posy = 0; posx <= 120; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth + posx, y * GameEngine.fieldHeight,
-                                  x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
+                        x * GameEngine.fieldWidth, y * GameEngine.fieldHeight + posy);
                 }
                 this.drawLine(x * GameEngine.fieldWidth + 122, y * GameEngine.fieldHeight+15,
-                              x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 122);
+                    x * GameEngine.fieldWidth+15, y * GameEngine.fieldHeight + 122);
                 for (let posx = 0, posy = 0; posx <= 60; posy+=15, posx += 15) {
                     this.drawLine(x * GameEngine.fieldWidth+120, y * GameEngine.fieldHeight+posy+40,
-                                  x * GameEngine.fieldWidth+posx+40, y * GameEngine.fieldHeight+120);
+                        x * GameEngine.fieldWidth+posx+40, y * GameEngine.fieldHeight+120);
                 }
                 break;
         }
         this.context.stroke();
     };
 
+    /**
+     * A helper function to draw a line
+     * @param x the x coordinate of the origin.
+     * @param y the y coordinate of the origin.
+     * @param x2 the x coordinate of the destination.
+     * @param y2 the y coordinate of the destination.
+     */
     this.drawLine = function(x, y, x2, y2){
         this.context.moveTo(x, y);
         this.context.lineTo(x2, y2);
     };
 
+    /**
+     * Temporary method. Helps to experiment with sounds.
+     */
     this.bounceSound = function(){
         switch(FixedValues.rep){
             case 0:
@@ -1165,6 +1202,9 @@ function Board() {
         // }
     };
 
+    /**
+     * The current player is moving left
+     */
     this.movePlayerLeft = function(){
         let player = GameEngine.currentPlayer;
         if (player.pos_x == 0){ // leftmost column, continue on the right column ...
@@ -1193,6 +1233,9 @@ function Board() {
 
     };
 
+    /**
+     * The current player is moving right
+     */
     this.movePlayerRight = function(){
         let player = GameEngine.currentPlayer;
         if (player.pos_x == GameEngine.numberOfColumns-1){ // rightmost column, continue on the left ...
@@ -1220,6 +1263,9 @@ function Board() {
         }
     };
 
+    /**
+     * The current player is moving up
+     */
     this.movePlayerUp = function(){
         let player = GameEngine.currentPlayer;
         // this.debugPlayer(player);
@@ -1248,6 +1294,9 @@ function Board() {
         }
     };
 
+    /**
+     * The current player is moving down
+     */
     this.movePlayerDown = function(){
         let player = GameEngine.currentPlayer;
         // this.debugPlayer(player);
@@ -1276,73 +1325,85 @@ function Board() {
         }
     };
 
+    /**
+     * Fire a shot from the found weapon, if any.
+     */
     this.fire = function () {
         GameEngine.moveMade();
         this.bounceSound();
         console.log("Fire called");
     };
 
+    /**
+     * Fire a shot from the superhero weapon.
+     */
     this.fireSuperHeroWeapon = function(){
         GameEngine.moveMade();
         console.log("FireSuperHeroWeapon called");
     };
 
+    /**
+     * Moves the player, handles weapon found on the way, etc.
+     * @param player the player to move.
+     * @param newX the x coordiante of the player to move to.
+     * @param newY the y coordiante of the player to move to.
+     */
     this.movePlayerMatrix = function(player, newX, newY){
         if (GameEngine.currentPlayer.shelf !== -1){
             // console.error("in dirty called");
             this.clearField(player.pos_x, player.pos_y);
             switch(GameEngine.currentPlayer.shelf){
-                 case FixedValues.WEAPON_KNIFE:
-                     // console.error("Draw Knife X"+player.pos_x+", "+player.pos_y);
-                     this.drawKnife(player.pos_x, player.pos_y);
-                     this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_KNIFE;
-                     GameEngine.currentPlayer.shelf = -1;
-                     break;
-                 case FixedValues.WEAPON_GUN:
-                     // console.error("Draw GUN: X"+player.pos_x+", "+player.pos_y);
-                     this.drawGun(player.pos_x, player.pos_y);
-                     this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_GUN;
-                     GameEngine.currentPlayer.shelf = -1;
-                     break;
-                 case FixedValues.WEAPON_FLAME_THROWER:
-                     // console.error("Draw FT X"+player.pos_x+", "+player.pos_y);
-                     this.drawFlameThrower(player.pos_x, player.pos_y);
-                     GameEngine.currentPlayer.shelf = -1;
-                     this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_FLAME_THROWER;
-                     break;
-                 case FixedValues.WEAPON_BOMB:
-                     // console.error("Draw Bomb X"+player.pos_x+", "+player.pos_y);
-                     this.drawBomb(player.pos_x, player.pos_y);
-                     GameEngine.currentPlayer.shelf = -1;
-                     this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_BOMB;
-                     break;
-                 default:
-                     console.error("No such weapon X");
-             }
-         } else {
+                case FixedValues.WEAPON_KNIFE:
+                    // console.error("Draw Knife X"+player.pos_x+", "+player.pos_y);
+                    this.drawKnife(player.pos_x, player.pos_y);
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_KNIFE;
+                    GameEngine.currentPlayer.shelf = -1;
+                    break;
+                case FixedValues.WEAPON_GUN:
+                    // console.error("Draw GUN: X"+player.pos_x+", "+player.pos_y);
+                    this.drawGun(player.pos_x, player.pos_y);
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_GUN;
+                    GameEngine.currentPlayer.shelf = -1;
+                    break;
+                case FixedValues.WEAPON_FLAME_THROWER:
+                    // console.error("Draw FT X"+player.pos_x+", "+player.pos_y);
+                    this.drawFlameThrower(player.pos_x, player.pos_y);
+                    GameEngine.currentPlayer.shelf = -1;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_FLAME_THROWER;
+                    break;
+                case FixedValues.WEAPON_BOMB:
+                    // console.error("Draw Bomb X"+player.pos_x+", "+player.pos_y);
+                    this.drawBomb(player.pos_x, player.pos_y);
+                    GameEngine.currentPlayer.shelf = -1;
+                    this.fields[player.pos_x][player.pos_y] = FixedValues.WEAPON_BOMB;
+                    break;
+                default:
+                    console.error("No such weapon X");
+            }
+        } else {
             // console.error("No weapon...");
-             this.fields[player.pos_x][player.pos_y] = FixedValues.EMPTY_FIELD;
-         }
+            this.fields[player.pos_x][player.pos_y] = FixedValues.EMPTY_FIELD;
+        }
         this.unShowPossibleMoves(player, newX, newY);
         this.redraw(player.pos_x, player.pos_y, player.playerNr, newX, newY);
         this.pickUpWeapon(newX, newY);
         StatemachineSound.playStep();
 
-       //
-       //
+        //
+        //
         // console.log("Before: ("+player.pos_x+", "+player.pos_y+")->("+newX+", "+newY+")");
-       //  //GameEngine.Board.debug();
+        //  //GameEngine.Board.debug();
         // this.fields[player.pos_x][player.pos_y] = 0;
         this.fields[newX][newY] = player.playerNr;
         player.pos_x = newX;
         player.pos_y = newY;
-       //  // console.log("After: "+player.pos_x+" "+player.pos_y);
-       //  // GameEngine.Board.debug();
-       //  // console.log(GameEngine.currentPlayer);
+        //  // console.log("After: "+player.pos_x+" "+player.pos_y);
+        //  // GameEngine.Board.debug();
+        //  // console.log(GameEngine.currentPlayer);
 
         player.movesMadeThisTime ++ ;
-       //  this.debugPlayer();
-       //
+        //  this.debugPlayer();
+        //
         if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
             GameEngine.switchPlayer();
             this.showPossibleMoves();
@@ -1351,6 +1412,14 @@ function Board() {
         }
     };
 
+    /**
+     * Redraw the given field.
+     * @param x the x coordiante of the field.
+     * @param y the y coordinate of the field.
+     * @param playerNr the number of the player.
+     * @param newX the x coordiante where the move is going to.
+     * @param newY the y coordiante where the move is going to.
+     */
     this.redraw = function(x,y, playerNr, newX, newY){
 //        console.log("Redraw called ("+x+", "+y+")->("+newX+", "+newY+")");
         this.context.clearRect(x * GameEngine.fieldWidth, y * GameEngine.fieldHeight, GameEngine.fieldWidth, GameEngine.fieldHeight);
@@ -1383,6 +1452,12 @@ function Board() {
         }
     };
 
+    /**
+     * Is the current player able to move to this field.
+     * @param x the x coordiante of the field.
+     * @param y the y coordinate of the field.
+     * @returns {boolean} true if it is possible, false otherwise.
+     */
     this.canMove = function(x,y){
         switch(this.fields[x][y]){
             case FixedValues.EMPTY_FIELD:          return true;
@@ -1400,8 +1475,8 @@ function Board() {
 
 /**
  * Superhero Class
- * @param name
- * @param defaultWeapon
+ * @param name the name of the superhero
+ * @param defaultWeapon what is the default name of the weapon.
  * @constructor
  */
 function SuperHero(name, defaultWeapon){
@@ -1431,14 +1506,24 @@ function Player(name, playerState, playerNr, superHeroClass) {
     this.shield = false;
     document.getElementById(this.playerState).style.backgroundColor = "green";
 
+    /**
+     * Resets the move counter.
+     */
     this.resetMove = function () {
         this.movesMadeThisTime = 0;
     };
 
+
+    /**
+     * Resets the weapon of this player.
+     */
     this.resetWeapons = function () {
         this.weapon = -1;
     };
 
+    /**
+     * Display the damage to the players.
+     */
     this.showDamage = new function () {
         // this.health -= damage;
         // let line = document.getElementById("tester").value; // TODO: exchange by real event
@@ -1464,24 +1549,44 @@ function Player(name, playerState, playerNr, superHeroClass) {
         }
     };
 
+    /**
+     * Is the player still alife?
+     * @returns {boolean}
+     */
     this.isAlive = function () {
         return this.health > 0;
     };
 
+    /**
+     * Getter method, not really needed.
+     * @param weapon the weapon that we keep.
+     */
     this.getWeapon = function () {
         return this.weapon;
     };
 
+    /**
+     * Setter method, not really needed.
+     * @param weapon the weapon to keep.
+     */
     this.setWeapon = function (weapon) {
         this.weapon = weapon;
     };
 
+    /**
+     * Replace the current weapon by a new one.
+     * @param newWeapon the weapon to keep.
+     */
     this.exchangeWeapon = function(newWeapon){
+        GameEngine.Board.unHandleWeapon(this.weapon);
         this.shelf = this.weapon;
         this.weapon = newWeapon;
     };
 
 }
+/**
+ * This function loads the basic minimum needed settings when the game is loaded into the browser.
+ */
 window.onload = function(){
     // Player
     GameEngine.player1 = null;
@@ -1512,6 +1617,13 @@ window.onload = function(){
 
 };
 
+/**
+ * In this structure weapons are specified.
+ * @param name the name of the weapon.
+ * @param damage how much demage does the weapon cause.
+ * @param damageWhenShieldIsUp how much demage does the weapon cause, when the player raised the shield before the weaopn was fired.
+ * @param range the distance that the weapon is effective.
+ */
 function Weapon(name, damage, damageWhenShieldIsUp, range) {
     this.name = name;
     this.damage = damage;
@@ -1519,6 +1631,10 @@ function Weapon(name, damage, damageWhenShieldIsUp, range) {
     this.range = range;
 }
 
+/**
+ * This function is called to display the game over message.
+ * @param name the name of the winner.
+ */
 function gameOver(name){
     document.getElementById("message1").innerHTML = "Congratulations "+name+" , you have won the challenge...";
     document.getElementById("message2").innerHTML = "... but war does not have a winner.";
