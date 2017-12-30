@@ -57,7 +57,7 @@ function enableWeaponsAndItems(id){
 GameEngine.newGame = function () {
     // console.log(GameEngine.gameRunning)
     if (GameEngine.gameRunning) {
-        // console.log("GameEngine.gameRunning true")
+        console.log("GameEngine.gameRunning true")
         $('#GameConfirmModal').modal('show');
     } else {
         this.newGameCall();
@@ -66,33 +66,27 @@ GameEngine.newGame = function () {
 
 GameEngine.newGameAfterGameOver  = function () {
     GameEngine.gameRunning = false;
+    $(document).unbind('keydown');
+
+    // Player 1
     GameEngine.player1.health = 100;
-    GameEngine.player2.health = 100;
     $("#player1").css('background', 'green');
-    //
-    // document.getElementById("player1").style.backgroundColor = "green";
-    console.log(document.getElementById("player1"));
     GameEngine.player1.shelf = -1;
     GameEngine.player1.weapon = -1;
     GameEngine.player1.movesMadeThisTime = 0;
+    GameEngine.player1.resetMove();
+
+    // Player 2
+    GameEngine.player2.health = 100;
     $("#player2").css('background', 'green');
-    // document.getElementById("player2").style.backgroundColor = "green";
-    console.log(document.getElementById("player2"));
     GameEngine.player2.shelf = -1;
     GameEngine.player2.weapon = -1;
     GameEngine.player2.movesMadeThisTime = 0;
+    GameEngine.player2.resetMove();
+
     GameEngine.currentPlayer=player1;
     GameEngine.Board.resetBoard();
-    // this.newGameCall();
     $('#newGameModal').modal('show');
-
-};
-/**
- * Function called by the "Are you sure dialog"
- */
-GameEngine.restartGame = function () {
-    // console.log("GameEngine.gameRunning overwrite")
-    this.newGameCall();
 };
 
 /**

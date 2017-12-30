@@ -7,7 +7,6 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - After GameOver is executed, stearing behaves kind of drunk
 
 /////////////////////////////
 // Done
@@ -24,3 +23,4 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // - Figure out if player is in range, when weapon is fired
 // - Repaint figures in green
 // - Unshow possible moves, when gun fired as last action
+// - After GameOver is executed, stearing behaves kind of drunk
