@@ -68,18 +68,21 @@ GameEngine.newGameAfterGameOver  = function () {
     GameEngine.gameRunning = false;
     GameEngine.player1.health = 100;
     GameEngine.player2.health = 100;
-    GameEngine.currentPlayer=player1;
-    document.getElementById("player1").style.backgroundColor = "green";
+    $("#player1").css('background', 'green');
+    //
+    // document.getElementById("player1").style.backgroundColor = "green";
     console.log(document.getElementById("player1"));
     GameEngine.player1.shelf = -1;
     GameEngine.player1.weapon = -1;
     GameEngine.player1.movesMadeThisTime = 0;
-    document.getElementById("player2").style.backgroundColor = "green";
+    $("#player2").css('background', 'green');
+    // document.getElementById("player2").style.backgroundColor = "green";
     console.log(document.getElementById("player2"));
     GameEngine.player2.shelf = -1;
     GameEngine.player2.weapon = -1;
     GameEngine.player2.movesMadeThisTime = 0;
-
+    GameEngine.currentPlayer=player1;
+    GameEngine.Board.resetBoard();
     // this.newGameCall();
     $('#newGameModal').modal('show');
 
@@ -91,11 +94,6 @@ GameEngine.restartGame = function () {
     // console.log("GameEngine.gameRunning overwrite")
     this.newGameCall();
 };
-
-// GameEngine.resetGameToInitialState = function(){
-//
-// };
-
 
 /**
  * Read the game, player and other settings
@@ -1036,7 +1034,7 @@ function Board() {
      */
     this.unShowPossibleMoves = function(player, newX, newY){
         // first calculate the steps left for this move
-        let stepsToDo = Number(GameEngine.numberOfMoves) - GameEngine.currentPlayer.movesMadeThisTime;
+        let stepsToDo = (Number(GameEngine.numberOfMoves)+1) - GameEngine.currentPlayer.movesMadeThisTime;
         // console.log("stepsToDo:", stepsToDo);
         // x axis - left of figure
         let count;
@@ -1050,7 +1048,7 @@ function Board() {
         for (count = 1; count <=stepsToDo; count++){
             let stop = this.unDrawMoveIfPossible(GameEngine.currentPlayer.pos_x + count, GameEngine.currentPlayer.pos_y, 2);
             if (stop) {
-                count = Number(GameEngine.numberOfMoves) + 5;
+                count = Number(GameEngine.numberOfMoves+1) + 5;
             }
         }
 
@@ -1480,10 +1478,12 @@ function Board() {
             default:
                 console.error("No such weapon X");
         }
-        this.unShowPossibleMoves(GameEngine.currentPlayer, newX, newY);
-        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, newX, newY);
+        this.unShowPossibleMoves(GameEngine.currentPlayer, GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y);
+        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y);
+        this.showPossibleMoves();
         if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
             GameEngine.switchPlayer();
+            this.showPossibleMoves();
         }
     };
 
@@ -1524,10 +1524,12 @@ function Board() {
         } else {
             console.error("None");
         }
-        this.unShowPossibleMoves(GameEngine.currentPlayer, newX, newY);
-        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, newX, newY);
+        this.unShowPossibleMoves(GameEngine.currentPlayer, GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y);
+        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y);
+        this.showPossibleMoves();
         if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
             GameEngine.switchPlayer();
+            this.showPossibleMoves();
         }
     };
 
