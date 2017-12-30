@@ -66,7 +66,23 @@ GameEngine.newGame = function () {
 
 GameEngine.newGameAfterGameOver  = function () {
     GameEngine.gameRunning = false;
-    this.newGameCall();
+    GameEngine.player1.health = 100;
+    GameEngine.player2.health = 100;
+    GameEngine.currentPlayer=player1;
+    document.getElementById("player1").style.backgroundColor = "green";
+    console.log(document.getElementById("player1"));
+    GameEngine.player1.shelf = -1;
+    GameEngine.player1.weapon = -1;
+    GameEngine.player1.movesMadeThisTime = 0;
+    document.getElementById("player2").style.backgroundColor = "green";
+    console.log(document.getElementById("player2"));
+    GameEngine.player2.shelf = -1;
+    GameEngine.player2.weapon = -1;
+    GameEngine.player2.movesMadeThisTime = 0;
+
+    // this.newGameCall();
+    $('#newGameModal').modal('show');
+
 };
 /**
  * Function called by the "Are you sure dialog"
@@ -75,6 +91,11 @@ GameEngine.restartGame = function () {
     // console.log("GameEngine.gameRunning overwrite")
     this.newGameCall();
 };
+
+// GameEngine.resetGameToInitialState = function(){
+//
+// };
+
 
 /**
  * Read the game, player and other settings
@@ -91,6 +112,7 @@ GameEngine.newGameCall = function () {
     GameEngine.currentPlayer = GameEngine.player1;
     document.getElementById(FixedValues.CURRENT_PLAYER_NAME_ID).innerHTML = "<p>"+pName1+"</p>";
     document.getElementById(FixedValues.CURRENT_PLAYER_NAME_2_ID).innerHTML = "<p>"+pName2+"</p>";
+
 
     // Calculate the board by user selection and set up additional parameters
     let dimension = $( "#dimension" ).val();
@@ -155,6 +177,9 @@ GameEngine.newGameCall = function () {
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_ID).innerHTML = "<p>Error: No more super heros defined</p>";
     }
 
+    document.getElementById("healthPlayer1").innerHTML = "<p>100</p>";
+    document.getElementById("healthPlayer2").innerHTML = "<p>100</p>";
+
     // Setting up the default Weapon Player 2
     if (document.getElementById(FixedValues.CV2_ID).checked){
         document.getElementById(FixedValues.SUPER_HERO_DEFAULT_WEAPON_2_ID).innerHTML = "<p>"+GameEngine.captainVolume.defaultWeapon+"</p>";
@@ -188,59 +213,61 @@ GameEngine.newGameCall = function () {
 
     GameEngine.gameRunning = true;
     $(document).keydown(function(e) {
-        switch(e.which) {
-            case FixedValues.DEBUG_PLAYER:
-                GameEngine.Board.debugPlayer();
-                break;
-            case FixedValues.DEBUG_BOARD:
-                GameEngine.Board.debug();
-                break;
-            case FixedValues.END_MOVE: // Enter
-                if (GameEngine.currentPlayer.movesMadeThisTime === 0){
-                    console.error("Sorry, one move is minimum!");
-                } else {
-                    GameEngine.switchPlayer();
-                }
-                break;
-            case FixedValues.LEFT:
-                // GameEngine.Board.debug();
-                // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
-                GameEngine.Board.movePlayerLeft();
-                break;
-            case FixedValues.SHOOT:
-                GameEngine.Board.fire();
-                break;
-            case FixedValues.SHOOT_SUPER_HERO_WEAPON:
-                GameEngine.Board.fireSuperHeroWeapon();
-                break;
-            case FixedValues.SHIELD:
-                if (GameEngine.currentPlayer.shield){
-                    GameEngine.currentPlayer.shield = false;
-                    disableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.SHIELD_ID : FixedValues.SHIELD2_ID);
-                } else {
-                    GameEngine.currentPlayer.shield = true;
-                    enableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.SHIELD_ID : FixedValues.SHIELD2_ID);
-                }
-                break;
-            case FixedValues.UP:
-                // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
-                GameEngine.Board.movePlayerUp();
-                break;
-            case FixedValues.RIGHT:
-                // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
-                GameEngine.Board.movePlayerRight();
-                // GameEngine.Board.debug();
-                break;
-            case FixedValues.DOWN:
-                GameEngine.Board.movePlayerDown();
-                // GameEngine.Board.debug();
-                // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
-                break;
-            default:
-                // console.log(e.which);
-                return; // exit this handler for other keys
+        if (GameEngine.gameRunning){
+            switch(e.which) {
+                case FixedValues.DEBUG_PLAYER:
+                    GameEngine.Board.debugPlayer();
+                    break;
+                case FixedValues.DEBUG_BOARD:
+                    GameEngine.Board.debug();
+                    break;
+                case FixedValues.END_MOVE: // Enter
+                    if (GameEngine.currentPlayer.movesMadeThisTime === 0){
+                        console.error("Sorry, one move is minimum!");
+                    } else {
+                        GameEngine.switchPlayer();
+                    }
+                    break;
+                case FixedValues.LEFT:
+                    // GameEngine.Board.debug();
+                    // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
+                    GameEngine.Board.movePlayerLeft();
+                    break;
+                case FixedValues.SHOOT:
+                    GameEngine.Board.fire();
+                    break;
+                case FixedValues.SHOOT_SUPER_HERO_WEAPON:
+                    GameEngine.Board.fireSuperHeroWeapon();
+                    break;
+                case FixedValues.SHIELD:
+                    if (GameEngine.currentPlayer.shield){
+                        GameEngine.currentPlayer.shield = false;
+                        disableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.SHIELD_ID : FixedValues.SHIELD2_ID);
+                    } else {
+                        GameEngine.currentPlayer.shield = true;
+                        enableWeaponsAndItems(GameEngine.currentPlayer.playerNr == 1 ? FixedValues.SHIELD_ID : FixedValues.SHIELD2_ID);
+                    }
+                    break;
+                case FixedValues.UP:
+                    // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
+                    GameEngine.Board.movePlayerUp();
+                    break;
+                case FixedValues.RIGHT:
+                    // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
+                    GameEngine.Board.movePlayerRight();
+                    // GameEngine.Board.debug();
+                    break;
+                case FixedValues.DOWN:
+                    GameEngine.Board.movePlayerDown();
+                    // GameEngine.Board.debug();
+                    // console.log("Bounce Player: " + GameEngine.Board.bounceOfThePlayer);
+                    break;
+                default:
+                    // console.log(e.which);
+                    return; // exit this handler for other keys
+            }
+            e.preventDefault(); // prevent the default action (scroll / move caret)
         }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
     });
 
 
@@ -575,7 +602,7 @@ function Board() {
     };
 
     /**
-     * Assign the new Weapon
+     * Unassign the new Weapon
      * @param change the weapon to assign.
      */
     this.unHandleWeapon = function(change){
@@ -1329,7 +1356,7 @@ function Board() {
         }
     };
 
-    this.canHit = function(){
+    this.canHit = function(range){
         let withinPlayers = false;
         let distanceBetweenPlayers = 0;
         if (GameEngine.player1.pos_x == GameEngine.player2.pos_x){
@@ -1346,16 +1373,14 @@ function Board() {
                         break;
                     case FixedValues.PLAYER_1:
                         if (withinPlayers){
-                            console.log("D:", distanceBetweenPlayers);
-                            return true;
+                            return (range >= (distanceBetweenPlayers+1));
                         } else {
                             withinPlayers = true;
                         }
                         break;
                     case FixedValues.PLAYER_2:
                         if (withinPlayers){
-                            console.log("D:", distanceBetweenPlayers);
-                            return true;
+                            return (range >= (distanceBetweenPlayers+1));
                         } else {
                             withinPlayers = true;
                         }
@@ -1407,19 +1432,6 @@ function Board() {
         return false;
     };
 
-    // this.inRangeOfWeapon = function(withDefaultWeapon){
-    //     if (this.canHit()){
-    //         if (withDefaultWeapon){
-    //             console.log("withDefaultWeapon");
-    //         } else {
-    //             console.log("with other weapon");
-    //         }
-    //     } else {
-    //         return false;
-    //     }
-    // };
-
-
     /**
      * Fire a shot from the found weapon, if any.
      */
@@ -1428,62 +1440,38 @@ function Board() {
         switch(weapon){
             case FixedValues.WEAPON_KNIFE:
                 GameEngine.moveMade();
-                if (this.canHit()){
-                    GameEngine.oppositePlayer().showDamage(10);
-                    console.log("can Hit")
+                if (this.canHit(GameEngine.Knife.range)){
+                    StatemachineSound.playKnifeStab(GameEngine.oppositePlayer().shield);
+                    GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.Knife.damageWhenShieldIsUp : GameEngine.Knife.damage);
                 } else {
-                    console.log("can't Hit")
-                }
-                console.log("Fire called with Knife");
-                StatemachineSound.playKnifeStab();
-                if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
-                    this.unShowPossibleMoves();
-                    GameEngine.switchPlayer();
+                    StatemachineSound.playKnifeStabMiss();
                 }
                 break;
             case FixedValues.WEAPON_GUN:
                 GameEngine.moveMade();
-                if (this.canHit()){
-                    GameEngine.oppositePlayer().showDamage(10);
-                    console.log("can Hit")
+                if (this.canHit(GameEngine.Gun.range)){
+                    StatemachineSound.playGun(GameEngine.oppositePlayer().shield);
+                    GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.Gun.damageWhenShieldIsUp : GameEngine.Gun.damage);
                 } else {
-                    console.log("can't Hit")
-                }
-                console.log("Fire called with Gun");
-                StatemachineSound.playGun();
-                if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
-                    this.unShowPossibleMoves();
-                    GameEngine.switchPlayer();
+                    StatemachineSound.playGunMiss();
                 }
                 break;
             case FixedValues.WEAPON_FLAME_THROWER:
                 GameEngine.moveMade();
-                if (this.canHit()){
-                    console.log("can Hit")
-                    GameEngine.oppositePlayer().showDamage(10);
+                if (this.canHit(GameEngine.FlameThrower.range)){
+                    StatemachineSound.playFlameThrower(GameEngine.oppositePlayer().shield);
+                    GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.FlameThrower.damageWhenShieldIsUp : GameEngine.FlameThrower.damage);
                 } else {
-                    console.log("can't Hit")
-                }
-                console.log("Fire called with Flamethrower");
-                StatemachineSound.playFlameThrower();
-                if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
-                    this.unShowPossibleMoves();
-                    GameEngine.switchPlayer();
+                    StatemachineSound.playFlameThrowerMiss();
                 }
                 break;
             case FixedValues.WEAPON_BOMB:
                 GameEngine.moveMade();
-                if (this.canHit()){
-                    GameEngine.oppositePlayer().showDamage(10);
-                    console.log("can Hit")
+                if (this.canHit(GameEngine.BOMB.range)){
+                    StatemachineSound.playBomb(GameEngine.oppositePlayer().shield);
+                    GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.BOMB.damageWhenShieldIsUp : GameEngine.BOMB.damage);
                 } else {
-                    console.log("can't Hit")
-                }
-                console.log("Fire called with Bomb");
-                StatemachineSound.playBomb();
-                if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
-                    this.unShowPossibleMoves();
-                    GameEngine.switchPlayer();
+                    StatemachineSound.playBombMiss();
                 }
                 break;
             case -1:
@@ -1491,6 +1479,11 @@ function Board() {
                 console.error("Fire called without a weapon");
             default:
                 console.error("No such weapon X");
+        }
+        this.unShowPossibleMoves(GameEngine.currentPlayer, newX, newY);
+        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, newX, newY);
+        if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
+            GameEngine.switchPlayer();
         }
     };
 
@@ -1501,48 +1494,39 @@ function Board() {
         GameEngine.moveMade();
         console.log("FireSuperHeroWeapon called");
         if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){
-            StatemachineSound.playCaptainVolume();
-            if (this.canHit()){
-                console.log("can Hit")
-                GameEngine.oppositePlayer().showDamage(10);
+            if (this.canHit(GameEngine.SuperSonicSound.range)){
+                StatemachineSound.playCaptainVolume(GameEngine.oppositePlayer().shield);
+                GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.SuperSonicSound.damageWhenShieldIsUp : GameEngine.SuperSonicSound.damage);
             } else {
-                console.log("can't Hit")
+                StatemachineSound.playCaptainVolumeMiss();
             }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.parryHotter){
-            StatemachineSound.playMagicBeam();
-            if (this.canHit()){
-                console.log("can Hit")
-                GameEngine.oppositePlayer().showDamage(10);
+            if (this.canHit(GameEngine.MagicSpell.range)){
+                StatemachineSound.playMagicBeam(GameEngine.oppositePlayer().shield);
+                GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.MagicSpell.damageWhenShieldIsUp : GameEngine.MagicSpell.damage);
             } else {
-                console.log("can't Hit")
+                StatemachineSound.playMagicBeamMiss();
             }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.caraLoft){
-            StatemachineSound.playLoveMe();
-            if (this.canHit()){
-                GameEngine.oppositePlayer().showDamage(10);
-                console.log("can Hit")
+            if (this.canHit(GameEngine.CaraLoft.range)){
+                StatemachineSound.playLoveSpell(GameEngine.oppositePlayer().shield);
+                GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.CaraLoft.damageWhenShieldIsUp : GameEngine.CaraLoft.damage);
             } else {
-                console.log("can't Hit")
+                StatemachineSound.playLoveSpellMiss();
             }
         } else if (GameEngine.currentPlayer.superHeroClass === GameEngine.lordDumpnat) {
-            StatemachineSound.playWrong();
-            if (this.canHit()){
-                GameEngine.oppositePlayer().showDamage(10);
-                console.log("can Hit")
+            if (this.canHit(GameEngine.AlternativeTruthBeam.range)){
+                    StatemachineSound.playWrong(GameEngine.oppositePlayer().shield);
+                    GameEngine.oppositePlayer().showDamage(GameEngine.oppositePlayer().shield? GameEngine.AlternativeTruthBeam.damageWhenShieldIsUp : GameEngine.AlternativeTruthBeam.damage);
             } else {
-                console.log("can't Hit")
+                StatemachineSound.playWrongMiss();
             }
         } else {
             console.error("None");
-            if (this.canHit()){
-                GameEngine.oppositePlayer().showDamage(10);
-                console.log("can Hit")
-            } else {
-                console.log("can't Hit")
-            }
         }
+        this.unShowPossibleMoves(GameEngine.currentPlayer, newX, newY);
+        this.redraw(GameEngine.currentPlayer.pos_x, GameEngine.currentPlayer.pos_y, GameEngine.currentPlayer.playerNr, newX, newY);
         if (GameEngine.currentPlayer.movesMadeThisTime >= Number(GameEngine.numberOfMoves)){
-            this.unShowPossibleMoves();
             GameEngine.switchPlayer();
         }
     };
@@ -1746,6 +1730,11 @@ function Player(name, playerState, playerNr, superHeroClass) {
             $('#GameOverModal').modal('show');
 
             console.error("Game Over");
+        }
+        if (GameEngine.oppositePlayer() === GameEngine.player1) {
+            document.getElementById("healthPlayer1").innerHTML = "<p>" + this.health + "</p>";
+        } else {
+            document.getElementById("healthPlayer2").innerHTML = "<p>" + this.health + "</p>";
         }
         switch(this.health) {
             case 0:

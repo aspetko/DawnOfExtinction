@@ -11,12 +11,44 @@
  */
 var StatemachineSound = {};
 
-StatemachineSound.playWrong = function(){
-    new Audio("../assets/sounds/WRONG.wav").play();
+StatemachineSound.playWrong = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/WRONG.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/WRONG.wav").play();
+    }
 };
 
-StatemachineSound.playGun  = function(){
-    new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3").play();
+StatemachineSound.playWrongMiss = function(){
+        let first = new Audio("../assets/sounds/WRONG.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+        };
+};
+
+StatemachineSound.playGun = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3").play();
+    }
+};
+
+StatemachineSound.playGunMiss = function(){
+    let first = new Audio("../assets/sounds/9_mm_gunshot-mike-koenig-123.mp3");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
 StatemachineSound.playBoing = function(){
@@ -32,50 +64,153 @@ StatemachineSound.playBoing = function(){
         console.error("None");
     }
 };
+
 StatemachineSound.playStep  = function(){
     new Audio("../assets/sounds/Step.mp3").play();
 };
 
-StatemachineSound.playBomb  = function(){
-    new Audio("../assets/sounds/Bomb.wav").play();
+StatemachineSound.playBomb  = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/Bomb.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/Bomb.wav").play();
+    }
 };
 
-StatemachineSound.playCaptainVolume  = function(){
-    new Audio("../assets/sounds/CaptainVolume.wav").play();
+StatemachineSound.playBombMiss = function(){
+    let first = new Audio("../assets/sounds/Bomb.wav");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
-StatemachineSound.playFlameThrower  = function(){
-    new Audio("../assets/sounds/FlameThrower.wav").play();
+StatemachineSound.playCaptainVolume  = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/CaptainVolume.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/CaptainVolume.wav").play();
+    }
+};
+
+StatemachineSound.playCaptainMiss = function(){
+    let first = new Audio("../assets/sounds/CaptainVolume.wav");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
+};
+
+StatemachineSound.playFlameThrower  = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/FlameThrower.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/FlameThrower.wav").play();
+    }
+};
+StatemachineSound.playFlameThrowerMiss = function(){
+    let first = new Audio("../assets/sounds/FlameThrower.wav");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
 StatemachineSound.playHeartBeat  = function(){
     new Audio("../assets/sounds/HeartBeat.mp3").play();
 };
 
-StatemachineSound.playKnifeStab  = function(){
-    new Audio("../assets/sounds/KnifeStab.wav").play();
+StatemachineSound.playKnifeStab  = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/KnifeStab.wav");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/KnifeStab.wav").play();
+    }
 };
 
-StatemachineSound.playLaser = function(){
-    new Audio("../assets/sounds/Laser.mp3").play();
+StatemachineSound.playKnifeStabMiss = function(){
+    let first = new Audio("../assets/sounds/KnifeStab.wav");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
-StatemachineSound.playLoveMe = function(){
-    new Audio("../assets/sounds/LoveMe.mp3").play();
+StatemachineSound.playLaser = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/Laser.mp3");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/Laser.mp3").play();
+    }
 };
 
-StatemachineSound.playLoveSpell = function(){
-    new Audio("../assets/sounds/LoveSpell.mp3").play();
+StatemachineSound.playLaserMiss = function(){
+    let first = new Audio("../assets/sounds/Laser.mp3");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
-StatemachineSound.playShieldBlocks = function(){
-    new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+StatemachineSound.playLoveSpell = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/LoveMe.mp3");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/LoveSpell.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/LoveMe.mp3").play();
+    }
 };
 
-StatemachineSound.playMagicBeam = function(){
-    new Audio("../assets/sounds/MagicBeam.mp3").play();
+StatemachineSound.playLoveSpellMiss = function(){
+    let first = new Audio("../assets/sounds/LoveMe.mp3");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
 };
 
+StatemachineSound.playMagicBeam = function(shield){
+    if (shield){
+        let first = new Audio("../assets/sounds/MagicBeam.mp3");
+        first.play();
+        first.onended = function() {
+            new Audio("../assets/sounds/ShieldBlocks.mp3").play();
+        };
+    } else {
+        new Audio("../assets/sounds/MagicBeam.mp3").play();
+    }
+};
+
+StatemachineSound.playMagicBeamMiss = function(){
+    let first = new Audio("../assets/sounds/MagicBeam.mp3");
+    first.play();
+    first.onended = function() {
+        new Audio("../assets/sounds/crowd-reactions-crowd-reactions-4.wav").play();
+    };
+};
 
 StatemachineSound.playPassAway  = function(){
     if (GameEngine.currentPlayer.superHeroClass === GameEngine.captainVolume){

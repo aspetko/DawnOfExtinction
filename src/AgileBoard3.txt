@@ -3,16 +3,23 @@ Let's simulate a agile board like a Scrum Board, Kanban or ... ;)
 // TODO:
 ////////////////////////////
 // - Implement do not bounce of the border
-// - Figure out if player is in range, when weapon is fired
-// - Check if player is still  alive.
-// - Unshow possible moves, when gun fired as last action
+// - Repaint figures in green
+
 /////////////////////////////
 //  Work In Progress
 /////////////////////////////
-// - cause damage when weapon is fired/ player is hit
+// - Unshow possible moves, when gun fired as last action
 
 /////////////////////////////
 // Done
 /////////////////////////////
 // - Bug: Enable/ Disable weapon in the repository is not working correct anymore
 // - Assign weapon to the fire and superhero fire action
+// - Check if player is still  alive.
+// - cause damage when weapon is fired/ player is hit
+// - Reset Health display
+// - Implement the shield
+// - Disable the keyboard events when in New Game Dialog
+// - use the values of the weapon to reduce the health of the player
+// - NAN when attacking with Lord...
+// - Figure out if player is in range, when weapon is fired
